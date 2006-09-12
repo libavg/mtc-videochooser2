@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE avg SYSTEM "../../libavg/doc/avg.dtd">
+<avg id="main" width="2944" height="1200"> 
+  <div id="screen" x="1024" y="0">
+    <image x="0" y="0" href="images/Background.png"/>
+    <div id="dirs" y="92">
+      <div id="dir1" x="32">
+        <image id="dir1bkgnd" x="0" y="0" opacity="0.67" 
+            href="images/DirSelected.png"/>
+        <words id="dir1text" x="8" y="48" font="ceva" color="F39C01" size="48" 
+            text="c-wars"/>
+      </div>
+      <div id="dir2" x="434">
+        <image id="dir2bkgnd" x="0" y="0" opacity="0.67" 
+            href="images/Dir.png"/>
+        <words id="dir2text" x="8" y="48" font="ceva" color="F39C01" size="48"
+            text="chill"/>
+      </div>
+    </div>
+    <div id="videoarea" x="32" y="250" width="1856" height="458">
+      <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>
+      <image id="selectedvideo" x="210" y="43" width="414" height="314" opacity="0.66" 
+          href="images/VideoSelected.png"/>
+      <image id="video" x="624" y="43" width="414" height="314" opacity="0.66" 
+          href="images/Video.png"/>
+      <image id="videobottom" y="357" opacity="0.66" href="images/VideoBottom.png"/>
+    </div>
+    <div id="infoarea" x="32" y="776">
+      <image id="infobkgnd" opacity="0.66" href="images/Info.png"/>
+      <words id="infotitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
+            text="Scene 5: Auftritt Thyraner"/>
+      <words id="infotext" x="8" y="50" font="EurostileCondensed" color="FFFFFF" size="30" 
+            text="Die Vorgeschichte wird erzählt."/>
+    </div>
+    <div id="controlarea" x="1234" y="776">
+      <image id="controlbkgnd" opacity="0.66" href="images/Controls.png"/>
+      <words id="controltitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
+            text="Controls"/>
+    </div>
+  </div>
+  <div id="projector" x="0" y="0">
+  </div>
+</avg>
