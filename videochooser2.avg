@@ -19,7 +19,7 @@
     </div>
     <div id="videoarea" x="32" y="250" width="1856" height="458">
       <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>
-      <div id="videoslider" x="1" y="43" width="1854" height="314">
+      <div id="videoslider" x="1" y="0" width="1854" height="357">
         <div id="videos" x="0" y="0"/>
       </div>
       <image id="videobottom" y="357" opacity="0.66" href="images/VideoBottom.png"/>
@@ -38,5 +38,6 @@
     </div>
   </div>
   <div id="projector" x="0" y="0" width="1024" height="768">
+    <video id="mainvideo" width="1024" height="768" href="" loop="1"/>
   </div>
 </avg>
