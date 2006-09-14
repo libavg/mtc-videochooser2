@@ -77,6 +77,10 @@ class ScrollBar:
         numScrollBars+=1
         scrollBarRegistry[self.__sliderNode.id] = self
 
+    def setRange(self, range):
+        self.__sliderRange = range
+        self.__positionSlider()
+
     def setSlider(self, pos, width):
         self.__sliderPos = pos
         self.__sliderWidth = width

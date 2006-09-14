@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+class DirInfo:
+    def __init__(self, videoInfos, dirName, title):
+        self.videoInfos = videoInfos
+        self.dirName = dirName
+        self.title = title
+
 class VideoInfo:
     def __init__(self, videoFile, title, description, imageFile1, imageFile2):
         self.videoFile = videoFile
@@ -8,7 +14,7 @@ class VideoInfo:
         self.imageFile1 = imageFile1
         self.imageFile2 = imageFile2
 
-ourVideoInfos = [
+cwarsVideoInfos = [
     VideoInfo("cwars-scene0.avi", "Pre-Title",  "", 
             "", ""),
     VideoInfo("cwars-scene1.avi", "Vorgeschichte", "Die Vorgeschichte wird erzählt",
@@ -74,4 +80,32 @@ ourVideoInfos = [
             "Scene31.png", "Scene32.png"),
     VideoInfo("cwars-scene31.avi", "Abspann", "", "", "")
     ]
-        
+
+chillVideoInfos = [
+    VideoInfo("sequenz_01_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_02_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_03_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_04_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_05_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_06_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_07_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_08_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_09_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_10_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_11_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_12_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_13_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_14_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_15_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_16_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_17_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_18_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_19_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_20_wos4_thg.avi", "", "", "", ""),
+    VideoInfo("sequenz_21_wos4_thg.avi", "", "", "", "")
+    ]
+
+ourDirInfos = [
+    DirInfo(cwarsVideoInfos, "c-wars", "c-wars"),
+    DirInfo(chillVideoInfos, "golle", "chill")
+    ]

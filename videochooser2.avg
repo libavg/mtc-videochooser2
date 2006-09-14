@@ -6,13 +6,13 @@
     <div id="dirs" y="92">
       <div id="dir1" x="32">
         <image id="dir1bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/DirSelected.png"/>
+            href="images/DirSelected.png" onmouseup="selectcwars"/>
         <words id="dir1text" x="8" y="48" font="ceva" color="F39C01" size="48" 
             text="c-wars"/>
       </div>
       <div id="dir2" x="434">
         <image id="dir2bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/Dir.png"/>
+            href="images/Dir.png" onmouseup="selectchill"/>
         <words id="dir2text" x="8" y="48" font="ceva" color="F39C01" size="48"
             text="chill"/>
       </div>
@@ -27,9 +27,11 @@
     <div id="infoarea" x="32" y="776">
       <image id="infobkgnd" opacity="0.66" href="images/Info.png"/>
       <words id="infotitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
-            text="Scene 5: Auftritt Thyraner"/>
-      <words id="infotext" x="8" y="50" font="EurostileCondensed" color="FFFFFF" size="30" 
-            text="Die Vorgeschichte wird erzählt."/>
+            text=""/>
+      <words id="infotext" x="8" y="60" font="EurostileCondensed" color="FFFFFF" size="30" 
+            text="" parawidth="360"/>
+      <image id="infoimage1" x="410" y="60" href=""/>
+      <image id="infoimage2" x="756" y="60" href=""/>
     </div>
     <div id="controlarea" x="1234" y="776">
       <image id="controlbkgnd" opacity="0.66" href="images/Controls.png"/>
