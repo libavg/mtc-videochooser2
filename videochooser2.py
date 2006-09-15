@@ -67,7 +67,7 @@ def onTiltControlMove(pos):
 
 def onTiltControlStop():
     global tiltScrollBar
-    Player.getElementByID("mainvideo").angle=0.5
+    Player.getElementByID("mainvideo").angle=0
     tiltScrollBar.setSlider(0.5, 0.1)
 
 def onSeekControlMove(pos):
