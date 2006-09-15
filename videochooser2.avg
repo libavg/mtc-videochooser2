@@ -4,15 +4,15 @@
   <div id="screen" x="1024" y="0">
     <image x="0" y="0" href="images/Background.png"/>
     <div id="dirs" y="92">
-      <div id="dir1" x="32">
+      <div id="dir1" x="32" onmouseup="selectcwars">
         <image id="dir1bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/DirSelected.png" onmouseup="selectcwars"/>
+            href="images/DirSelected.png"/>
         <words id="dir1text" x="8" y="48" font="ceva" color="F39C01" size="48" 
             text="c-wars"/>
       </div>
-      <div id="dir2" x="434">
+      <div id="dir2" x="434" onmouseup="selectchill">
         <image id="dir2bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/Dir.png" onmouseup="selectchill"/>
+            href="images/Dir.png"/>
         <words id="dir2text" x="8" y="48" font="ceva" color="F39C01" size="48"
             text="chill"/>
       </div>
@@ -37,9 +37,16 @@
       <image id="controlbkgnd" opacity="0.66" href="images/Controls.png"/>
       <words id="controltitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
             text="Controls"/>
+      <words id="fade" x="8" y="60" font="EurostileCondensed" color="F39C01" size="30" 
+            text="Fade"/>
+      <words id="tilt" x="8" y="150" font="EurostileCondensed" color="F39C01" size="30" 
+            text="Tilt"/>
+      <words id="seek" x="8" y="210" font="EurostileCondensed" color="F39C01" size="30" 
+            text="Seek"/>
     </div>
   </div>
   <div id="projector" x="0" y="0" width="1024" height="768">
     <video id="mainvideo" width="1024" height="768" href="" loop="1"/>
+    <image id="fadecolor" width="1024" height="768" href="images/FadeColor.png" opacity="0"/>
   </div>
 </avg>

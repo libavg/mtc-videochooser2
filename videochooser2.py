@@ -38,6 +38,49 @@ def videoMouseUp():
     videoIndex = int(Event.node.id[5:])
     selectVideo(videoIndex)
 
+def addControls():
+    global fadeScrollBar
+    global tiltScrollBar
+    global seekScrollBar
+    fadeScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 90, 
+            640, 1.1)
+    fadeScrollBar.setSlider(0, 0.1)
+    fadeScrollBar.setCallbacks(onFadeControlMove, onFadeControlStop)
+    tiltScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 180, 
+            640, 1.1)
+    tiltScrollBar.setSlider(0.5, 0.1)
+    tiltScrollBar.setCallbacks(onTiltControlMove, onTiltControlStop)
+    seekScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 270, 
+            640, 1050)
+    seekScrollBar.setSlider(0.0, 50)
+    seekScrollBar.setCallbacks(onSeekControlMove, None)
+
+def onFadeControlMove(pos):
+    Player.getElementByID("fadecolor").opacity=pos
+
+def onFadeControlStop():
+    Player.getElementByID("fadecolor").opacity=0
+    fadeScrollBar.setSlider(0, 0.1)
+
+def onTiltControlMove(pos):
+    Player.getElementByID("mainvideo").angle=pos-0.5
+
+def onTiltControlStop():
+    global tiltScrollBar
+    Player.getElementByID("mainvideo").angle=0.5
+    tiltScrollBar.setSlider(0.5, 0.1)
+
+def onSeekControlMove(pos):
+    if ourSelectedVideo != -1:
+        Player.getElementByID("mainvideo").seekToFrame(int(pos+1))
+        Player.getElementByID("video"+str(ourSelectedVideo)).seekToFrame(int(pos+1))
+    
+def setSeekScrollBar():
+    global seekScrollBar
+    ourVideo = Player.getElementByID("video"+str(ourSelectedVideo))
+    seekScrollBar.setRange(ourVideo.getNumFrames())
+    seekScrollBar.setSlider(ourVideo.getCurFrame(), ourVideo.getNumFrames()/30+1)
+
 def initVideoNodes():
     global Player
     global curVideoInfos
@@ -151,7 +194,7 @@ def selectDir(index):
         curDir = index
         curVideoInfos = ourDirInfos[curDir].videoInfos
         initVideoNodes()
-        sb.setRange(getVideoViewportWidth())
+        sb.setRange(getVideoViewportWidth()-14)
         sb.setSlider(0, VIDEO_AREA_WIDTH)
         ourSelectedVideo = -1
         mainVideo = Player.getElementByID("mainvideo")
@@ -186,6 +229,7 @@ def onFrame():
             smallVideo = Player.getElementByID("video"+str(newSelectedVideo))
             smallVideo.seekToFrame(1)
             selectVideo(newSelectedVideo)
+        setSeekScrollBar()
 
 def getVideoViewportWidth():
     global curVideoInfos
@@ -215,4 +259,5 @@ Player.setVBlankFramerate(2)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6, 398, 
         VIDEO_AREA_WIDTH, 1000)
 Player.setInterval(10, onFrame)
+addControls()
 Player.play()

@@ -30,7 +30,20 @@ def ScrollerMouseMove():
 
 def ScrollerMouseUp():
     global ourIsScrolling
-    ourIsScrolling = False
+    if ourIsScrolling:
+        ourIsScrolling = False
+        Event = ourPlayer.getCurEvent()
+        if Event.node.id[0:8] == "scroller":
+            scrollBar = scrollBarRegistry[Event.node.id]
+            scrollBar.onMoveStop()
+
+def ScrollerMouseOut():
+    global ourIsScrolling
+    if ourIsScrolling:
+        Event = ourPlayer.getCurEvent()
+        if Event.node.id[0:8] == "scroller":
+            scrollBar = scrollBarRegistry[Event.node.id]
+            scrollBar.onMoveStop()
 
 class ScrollBar:
     def __init__(self, player, parentNode, x, y, width, sliderRange):
@@ -50,7 +63,7 @@ class ScrollBar:
         node = player.createNode("<image href='images/ScrollbarEnd.png' x='0' y='0'/>")
         self.__node.addChild(node)
         
-        node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0' onmousemove='ScrollerMouseMove'/>")
+        node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0' onmouseup='ScrollerMouseUp' onmousemove='ScrollerMouseMove' onmouseout='ScrollerMouseOut'/>")
         node.id = "scrollerbg"+str(numScrollBars)
         node.width=width-2
         node.height=50
@@ -73,6 +86,8 @@ class ScrollBar:
                 "<image href='images/ScrollbarScrollerEnd.png'/>")
         self.__node.addChild(self.__sliderEndNode)
         
+        self.__moveCallback = None
+        self.__stopCallback = None
         self.__positionSlider()
         numScrollBars+=1
         scrollBarRegistry[self.__sliderNode.id] = self
@@ -86,6 +101,10 @@ class ScrollBar:
         self.__sliderWidth = width
         self.__positionSlider()
 
+    def setCallbacks(self, moveCallback, stopCallback):
+        self.__moveCallback = moveCallback
+        self.__stopCallback = stopCallback
+
     def getPos(self):
         return self.__sliderPos
 
@@ -97,7 +116,12 @@ class ScrollBar:
             self.__sliderPos = self.__sliderRange-self.__sliderWidth
         if self.__sliderPos < 0:
             self.__sliderPos = 0
-        self.__positionSlider()
+        if self.__positionSlider != None:
+            self.__positionSlider()
+
+    def onMoveStop(self):
+        if self.__stopCallback != None:
+            self.__stopCallback()
 
     def __positionSlider(self):
         relativePos = float(self.__sliderPos)/self.__sliderRange
@@ -108,4 +132,6 @@ class ScrollBar:
         self.__sliderNode.width = width-2
         self.__sliderNode.height = 50
         self.__sliderEndNode.x = startPos+width
+        if self.__moveCallback != None:
+            self.__moveCallback(self.__sliderPos)
 
