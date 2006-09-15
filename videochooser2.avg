@@ -41,7 +41,7 @@
             text="Fade"/>
       <words id="tilt" x="8" y="150" font="EurostileCondensed" color="F39C01" size="30" 
             text="Tilt"/>
-      <words id="seek" x="8" y="210" font="EurostileCondensed" color="F39C01" size="30" 
+      <words id="seek" x="8" y="240" font="EurostileCondensed" color="F39C01" size="30" 
             text="Seek"/>
     </div>
   </div>

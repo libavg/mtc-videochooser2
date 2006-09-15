@@ -118,6 +118,8 @@ class ScrollBar:
             self.__sliderPos = 0
         if self.__positionSlider != None:
             self.__positionSlider()
+            if self.__moveCallback != None:
+                self.__moveCallback(self.__sliderPos)
 
     def onMoveStop(self):
         if self.__stopCallback != None:
@@ -132,6 +134,4 @@ class ScrollBar:
         self.__sliderNode.width = width-2
         self.__sliderNode.height = 50
         self.__sliderEndNode.x = startPos+width
-        if self.__moveCallback != None:
-            self.__moveCallback(self.__sliderPos)
 

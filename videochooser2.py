@@ -72,13 +72,13 @@ def onTiltControlStop():
 
 def onSeekControlMove(pos):
     if ourSelectedVideo != -1:
-        Player.getElementByID("mainvideo").seekToFrame(int(pos+1))
-        Player.getElementByID("video"+str(ourSelectedVideo)).seekToFrame(int(pos+1))
+        Player.getElementByID("mainvideo").seekToFrame(int(pos))
+        Player.getElementByID("video"+str(ourSelectedVideo)).seekToFrame(int(pos))
     
 def setSeekScrollBar():
     global seekScrollBar
     ourVideo = Player.getElementByID("video"+str(ourSelectedVideo))
-    seekScrollBar.setRange(ourVideo.getNumFrames())
+    seekScrollBar.setRange((ourVideo.getNumFrames()*31)/30+1)
     seekScrollBar.setSlider(ourVideo.getCurFrame(), ourVideo.getNumFrames()/30+1)
 
 def initVideoNodes():
