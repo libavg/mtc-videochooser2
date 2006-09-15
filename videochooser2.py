@@ -10,8 +10,8 @@ from videoinfo import *
 BORDER_WIDTH=16
 VIDEO_THUMBNAIL_WIDTH=380
 VIDEO_THUMBNAIL_HEIGHT=285
-#VIDEO_DIR="/home/uzadow/wos_videos/"
-VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_DIR="/home/uzadow/wos_videos/"
+#VIDEO_DIR="/Users/uzadow/wos_videos/"
 VIDEO_AREA_WIDTH=1842
 
 ourSelectedVideo = -1
@@ -35,8 +35,9 @@ def videoMouseOut():
 
 def videoMouseUp():
     Event = Player.getCurEvent()
-    videoIndex = int(Event.node.id[5:])
-    selectVideo(videoIndex)
+    if Event.node.id[:5] == "video":
+        videoIndex = int(Event.node.id[5:])
+        selectVideo(videoIndex)
 
 def addControls():
     global fadeScrollBar
@@ -124,8 +125,8 @@ def initVideoNodes():
         
     curEntry = 0
     for videoInfo in curVideoInfos:
-#        href = VIDEO_DIR+"thumbs/"+videoInfo.videoFile
-        href = VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+videoInfo.videoFile
+        href = VIDEO_DIR+ourDirInfos[curDir].dirName+"/thumbs/"+videoInfo.videoFile
+#        href = VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+videoInfo.videoFile
         createVideoNode(curEntry, href, videoInfo.title)
         curEntry += 1
 #    files = os.listdir(VIDEO_DIR+"thumbs/")
