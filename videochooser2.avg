@@ -1,52 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE avg SYSTEM "../../libavg/doc/avg.dtd">
-<avg id="main" width="2944" height="1200"> 
-  <div id="screen" x="1024" y="0">
+<avg id="main" width="1280" height="720"> 
     <image x="0" y="0" href="images/Background.png"/>
-    <div id="dirs" y="92">
-      <div id="dir1" x="32" onmouseup="selectcwars">
-        <image id="dir1bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/DirSelected.png"/>
-        <words id="dir1text" x="8" y="48" font="ceva" color="F39C01" size="48" 
-            text="c-wars"/>
-      </div>
-      <div id="dir2" x="434" onmouseup="selectchill">
-        <image id="dir2bkgnd" x="0" y="0" opacity="0.67" 
-            href="images/Dir.png"/>
-        <words id="dir2text" x="8" y="48" font="ceva" color="F39C01" size="48"
-            text="chill"/>
-      </div>
-    </div>
-    <div id="videoarea" x="32" y="250" width="1856" height="458">
+    <video id="mainvideo" x="341" y="16" width="597" height="448" href="" loop="1"/>
+    <div id="videoarea" x="128" y="480" width="1024" height="180">
       <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>
-      <div id="videoslider" x="1" y="0" width="1854" height="357">
+      <div id="videoslider" x="0" y="0" width="1214" height="357">
         <div id="videos" x="0" y="0"/>
       </div>
-      <image id="videobottom" y="357" opacity="0.66" href="images/VideoBottom.png"/>
+      <image id="videobottom" y="150" opacity="0.66" href="images/VideoBottom.png"/>
     </div>
-    <div id="infoarea" x="32" y="776">
-      <image id="infobkgnd" opacity="0.66" href="images/Info.png"/>
-      <words id="infotitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
-            text=""/>
-      <words id="infotext" x="8" y="60" font="EurostileCondensed" color="FFFFFF" size="30" 
-            text="" parawidth="360"/>
-      <image id="infoimage1" x="410" y="60" href=""/>
-      <image id="infoimage2" x="756" y="60" href=""/>
-    </div>
-    <div id="controlarea" x="1234" y="776">
-      <image id="controlbkgnd" opacity="0.66" href="images/Controls.png"/>
-      <words id="controltitle" x="8" y="4" font="EurostileCondensed" color="F39C01" size="30" 
-            text="Controls"/>
-      <words id="fade" x="8" y="60" font="EurostileCondensed" color="F39C01" size="30" 
-            text="Fade"/>
-      <words id="tilt" x="8" y="150" font="EurostileCondensed" color="F39C01" size="30" 
-            text="Tilt"/>
-      <words id="seek" x="8" y="240" font="EurostileCondensed" color="F39C01" size="30" 
-            text="Seek"/>
-    </div>
-  </div>
-  <div id="projector" x="0" y="0" width="1024" height="768">
-    <video id="mainvideo" width="1024" height="768" href="" loop="1"/>
-    <image id="fadecolor" width="1024" height="768" href="images/FadeColor.png" opacity="0"/>
-  </div>
 </avg>

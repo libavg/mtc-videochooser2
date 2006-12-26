@@ -70,7 +70,7 @@ cwarsVideoInfos = [
             "Bevor die Nindith-Flotte von den Viranern restlos vernichtet wird, ergreift sie die Flucht.",
             "Scene25.png", "Scene25a.png"),
     VideoInfo("cwars-scene26.avi", "Mehr Thera'in",
-            "Die Thera'in erhalten Verstärkung, Raumschlacht",
+            "Die Thera'in erhalten Verstärkung, Raumschlacht.",
             "Scene25b.png", ""),
     VideoInfo("cwars-scene29.avi", "Die Schlacht Endet", 
             "Mit der Zerstörung des Viraner-Kommandoschiffes ist die Schlacht gewonnen.",
@@ -90,19 +90,19 @@ chillVideoInfos = [
     VideoInfo("sequenz_06_wos4_thg.avi", "", "", "", ""),
     VideoInfo("sequenz_07_wos4_thg.avi", "", "", "", ""),
     VideoInfo("sequenz_08_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_09_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_10_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_11_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_12_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_13_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_14_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_15_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_16_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_17_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_18_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_19_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_20_wos4_thg.avi", "", "", "", ""),
-    VideoInfo("sequenz_21_wos4_thg.avi", "", "", "", "")
+    VideoInfo("sequenz_09_wos4_thg.avi", "", "", "", "")
+#    VideoInfo("sequenz_10_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_11_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_12_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_13_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_14_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_15_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_16_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_17_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_18_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_19_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_20_wos4_thg.avi", "", "", "", ""),
+#    VideoInfo("sequenz_21_wos4_thg.avi", "", "", "", "")
     ]
 
 ourDirInfos = [
