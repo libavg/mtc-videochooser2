@@ -3,7 +3,7 @@
 <avg id="main" width="1280" height="720" onkeyup="onKeyUp">
     <image x="0" y="0" href="images/Background.png"/>
     <div id="videospace" x="341" y="16">
-        <video id="mainvideo" x="0" y="0" width="597" height="448" href="" loop="1"/>
+        <video id="mainvideo" x="0" y="0" width="544" height="408" href="" loop="1"/>
     </div>
     <div id="videoarea" x="128" y="480" width="1024" height="180">
       <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>

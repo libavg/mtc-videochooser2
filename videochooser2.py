@@ -44,8 +44,8 @@ def videoMouseUp():
 
 def addControls():
     global seekScrollBar
-    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 8, 404, 
-            581, 1000)
+    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 8, 364, 
+            528, 1000)
     seekScrollBar.setSlider(0.0, 100)
     seekScrollBar.setCallbacks(onSeekControlStart, onSeekControlMove, onSeekControlStop)
 
