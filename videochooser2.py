@@ -4,6 +4,7 @@
 import sys, os, math, stat
 import avg
 import anim
+from Calibrator import *
 from scrollbar import *
 from videoinfo import *
 
@@ -11,8 +12,8 @@ BORDER_WIDTH=4
 VIDEO_THUMBNAIL_WIDTH=160
 VIDEO_THUMBNAIL_HEIGHT=120
 #VIDEO_DIR="/home/uzadow/wos_videos/"
-VIDEO_DIR="/home/mtc/"
-#VIDEO_DIR="/Users/uzadow/wos_videos/"
+#VIDEO_DIR="/home/mtc/"
+VIDEO_DIR="/Users/uzadow/wos_videos/"
 VIDEO_AREA_WIDTH=1024
 
 ourSelectedVideo = -1
@@ -43,7 +44,7 @@ def videoMouseUp():
 
 def addControls():
     global seekScrollBar
-    seekScrollBar = ScrollBar(Player, Player.getElementByID("main"), 349, 420, 
+    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 8, 404, 
             581, 1000)
     seekScrollBar.setSlider(0.0, 100)
     seekScrollBar.setCallbacks(onSeekControlStart, onSeekControlMove, onSeekControlStop)
@@ -95,7 +96,7 @@ def initVideoNodes():
         
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
                 "' loop='true' onmouseover='videoMouseOver' onmouseout='videoMouseOut' "
-                "onmouseup='videoMouseUp' ontouchup='videoMouseUp'/>")
+                "onmouseup='videoMouseUp' ontouchdown='videoMouseUp'/>")
         node.x = BORDER_WIDTH
         node.y = 22+BORDER_WIDTH
         node.height = VIDEO_THUMBNAIL_HEIGHT
@@ -137,7 +138,7 @@ def startVideos():
             else:
                 CurVideo.play()
                 MainVideo.play()
-        elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1854:
+        elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1024:
             CurVideo.play()
         else:
             CurVideo.pause()
@@ -198,6 +199,15 @@ def getVideoViewportWidth():
     global curVideoInfos
     return len(curVideoInfos)*(VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)
 
+def onKeyUp():
+    global Cal
+    global Player
+    Event = Player.getCurEvent()
+    if Event.keystring == "t":
+        Cal.switchActive()
+    elif Cal.isActive():
+        Cal.onKeyUp(Event)
+
 Player = avg.Player()
 Log = avg.Logger.get()
 bDebug = not(os.getenv('AVG_DEPLOY'))
@@ -224,4 +234,5 @@ sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6,
 Player.setInterval(10, onFrame)
 addControls()
 Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")
+Cal = Calibrator(Tracker, Player)
 Player.play()

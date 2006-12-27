@@ -1,13 +1,48 @@
 <?xml version="1.0"?>
 <!DOCTYPE avg SYSTEM "../../libavg/doc/avg.dtd">
-<avg id="main" width="1280" height="720"> 
+<avg id="main" width="1280" height="720" onkeyup="onKeyUp">
     <image x="0" y="0" href="images/Background.png"/>
-    <video id="mainvideo" x="341" y="16" width="597" height="448" href="" loop="1"/>
+    <div id="videospace" x="341" y="16">
+        <video id="mainvideo" x="0" y="0" width="597" height="448" href="" loop="1"/>
+    </div>
     <div id="videoarea" x="128" y="480" width="1024" height="180">
       <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>
       <div id="videoslider" x="0" y="0" width="1214" height="357">
         <div id="videos" x="0" y="0"/>
       </div>
       <image id="videobottom" y="150" opacity="0.66" href="images/VideoBottom.png"/>
+    </div>
+    <div id="calibrator" opacity="0" active="false">
+      <image id="border" x="0" y="0" width="1280" height="720" href="../images/border.png"/>
+      <image id="fingers" x="1" y="1" width="1278" height="710"/>
+      <div id="tracking" x="300" y="32">
+        <words x="0" y="13" text="camera" size="16" font="Eurostile"/>
+        <image x="0" y="32" href="../images/CamImgBorder.png"/>
+        <image id="camera" x="2" y="34" width="160" height="120"/>
+        
+        <words x="166" y="13" text="distorted" size="16" font="Eurostile"/>
+        <image x="166" y="32" href="../images/CamImgBorder.png"/>
+        <image id="distorted" x="168" y="34" width="160" height="120"/>
+
+        <words x="332" y="13" text="history" size="16" font="Eurostile"/>
+        <image x="332" y="32" href="../images/CamImgBorder.png"/>
+        <image id="nohistory" x="334" y="34" width="160" height="120"/>
+        
+        <image x="498" y="32" href="../images/CamImgBorder.png"/>
+        <image id="histogram" x="500" y="34" width="160" height="120"/>
+
+        <words id="param0" x="0" y="162" size="13" font="Eurostile"/> 
+        <words id="param1" x="0" y="178" size="13" font="Eurostile"/> 
+        <words id="param2" x="0" y="194" size="13" font="Eurostile"/> 
+        <words id="param3" x="166" y="162" size="13" font="Eurostile"/> 
+        <words id="param4" x="166" y="178" size="13" font="Eurostile"/> 
+        <words id="param5" x="166" y="194" size="13" font="Eurostile"/> 
+        <words id="param6" x="166" y="210" size="13" font="Eurostile"/> 
+        <words x="332" y="162" size="13" font="Eurostile" text="ROI" color="A0A0FF"/>
+        <words id="param7" x="348" y="178" size="13" font="Eurostile"/> 
+        <words id="param8" x="418" y="178" size="13" font="Eurostile"/> 
+        <words id="param9" x="348" y="194" size="13" font="Eurostile"/> 
+        <words id="param10" x="418" y="194" size="13" font="Eurostile"/> 
+      </div>
     </div>
 </avg>
