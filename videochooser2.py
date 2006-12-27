@@ -11,7 +11,8 @@ BORDER_WIDTH=4
 VIDEO_THUMBNAIL_WIDTH=160
 VIDEO_THUMBNAIL_HEIGHT=120
 #VIDEO_DIR="/home/uzadow/wos_videos/"
-VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_DIR="/home/mtc/"
+#VIDEO_DIR="/Users/uzadow/wos_videos/"
 VIDEO_AREA_WIDTH=1024
 
 ourSelectedVideo = -1
@@ -204,7 +205,7 @@ if (bDebug):
     Player.setResolution(0, 0, 0, 0) 
 else:
     Player.setResolution(1, 0, 0, 0)
-    Log.setFileDest("/var/log/cleuse.log")
+#    Log.setFileDest("/var/log/cleuse.log")
 Log.setCategories(Log.APP |
                   Log.WARNING | 
                   Log.PROFILE |
@@ -222,4 +223,5 @@ sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6,
         14+VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH, VIDEO_AREA_WIDTH-12, 1000)
 Player.setInterval(10, onFrame)
 addControls()
+Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")
 Player.play()
