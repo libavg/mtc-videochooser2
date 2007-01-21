@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys, os, math, stat
-import avg
-import anim
+from libavg import avg
+from libavg import anim
 from Calibrator import *
 from scrollbar import *
 from videoinfo import *

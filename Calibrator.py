@@ -1,11 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import avg
 
 import sys, os, math, stat
-import avg
-import anim
+from libavg import avg
+from libavg import anim
 
 global gCalibrator
 global gPlayer
