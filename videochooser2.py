@@ -125,23 +125,25 @@ def removeVideoNodes():
 
 def startVideos():
     global isSeeking
-    VideoArea = Player.getElementByID("videos")
-    MainVideo = Player.getElementByID("mainvideo")
-    for i in range(0, VideoArea.getNumChildren()):
-        CurVideoArea = VideoArea.getChild(i)
-        CurVideo = CurVideoArea.getChild(2)
-        videoPos = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*i-sb.getPos()
-        if i == ourSelectedVideo:
-            if isSeeking:
-                CurVideo.pause()
-                MainVideo.pause()
-            else:
+    global Cal
+    if not(Cal.isActive()):
+        VideoArea = Player.getElementByID("videos")
+        MainVideo = Player.getElementByID("mainvideo")
+        for i in range(0, VideoArea.getNumChildren()):
+            CurVideoArea = VideoArea.getChild(i)
+            CurVideo = CurVideoArea.getChild(2)
+            videoPos = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*i-sb.getPos()
+            if i == ourSelectedVideo:
+                if isSeeking:
+                    CurVideo.pause()
+                    MainVideo.pause()
+                else:
+                    CurVideo.play()
+                    MainVideo.play()
+            elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1024:
                 CurVideo.play()
-                MainVideo.play()
-        elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1024:
-            CurVideo.play()
-        else:
-            CurVideo.pause()
+            else:
+                CurVideo.pause()
 
 def selectVideo(selectedVideo):
     global ourSelectedVideo
@@ -205,6 +207,15 @@ def onKeyUp():
     Event = Player.getCurEvent()
     if Event.keystring == "t":
         Cal.switchActive()
+        if Cal.isActive():
+            VideoArea = Player.getElementByID("videos")
+            for i in range(0, VideoArea.getNumChildren()):
+                CurVideoArea = VideoArea.getChild(i)
+                CurVideo = CurVideoArea.getChild(2)
+                CurVideo.pause()
+            mainVideo = Player.getElementByID("mainvideo")
+            if mainVideo.href != "":
+                mainVideo.pause()
     elif Cal.isActive():
         Cal.onKeyUp(Event)
 
@@ -228,7 +239,7 @@ Log.setCategories(Log.APP |
                  )
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
-Player.setVBlankFramerate(2)
+Player.setVBlankFramerate(1)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6, 
         14+VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH, VIDEO_AREA_WIDTH-12, 1000)
 Player.setInterval(10, onFrame)

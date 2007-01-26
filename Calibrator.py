@@ -17,6 +17,7 @@ class Calibrator:
         gCalibrator = self
         self.__isActive = False
         self.__Tracker = Tracker
+        self.__showSmallBmps = True
         self.__ParamList = [
             {'Name':"threshold", 'min':1, 'max':255, 'increment':1, 'precision':0},
             {'Name':"brightness", 'min':1, 'max':255, 'increment':1, 'precision':0},
@@ -78,11 +79,16 @@ class Calibrator:
         if Val > curParam['max']:
             Val = curParam['max']
         self.__setParam(curParam['id'], Val)
+    def __showImages(self):
+        self.__showSmallBmps = not(self.__showSmallBmps) 
+        self.__Tracker.setDebugImages(self.__showSmallBmps, True)
+        gPlayer.getElementByID("tracking").active = self.__showSmallBmps
     def onFrame(self):
-        self.__updateBitmap("camera", avg.IMG_CAMERA)
-        self.__updateBitmap("distorted", avg.IMG_DISTORTED)
-        self.__updateBitmap("nohistory", avg.IMG_NOHISTORY)
-        self.__updateBitmap("histogram", avg.IMG_HISTOGRAM)
+        if self.__showSmallBmps:
+            self.__updateBitmap("camera", avg.IMG_CAMERA)
+            self.__updateBitmap("distorted", avg.IMG_DISTORTED)
+            self.__updateBitmap("nohistory", avg.IMG_NOHISTORY)
+            self.__updateBitmap("histogram", avg.IMG_HISTOGRAM)
         self.__updateBitmap("fingers", avg.IMG_FINGERS)
     def switchActive(self):
         global gPlayer
@@ -97,7 +103,7 @@ class Calibrator:
             gPlayer.getElementByID("calibrator").opacity = 1 
             self.__onFrameID = gPlayer.setInterval(1, self.onFrame)
             self.__displayParams()
-        self.__Tracker.debug = self.__isActive
+        self.__Tracker.setDebugImages(self.__showSmallBmps, self.__isActive)
     def onKeyUp(self, Event):
         if Event.keystring == "up":
             if self.__curParam > 0:
@@ -127,6 +133,8 @@ class Calibrator:
             self.__Tracker.getImage(avg.IMG_HIGHPASS).save("img"+str(self.__saveIndex)+"_highpass.png")
             self.__Tracker.getImage(avg.IMG_FINGERS).save("img"+str(self.__saveIndex)+"_fingers.png")
             print ("Images saved.")
+        elif Event.keystring == "i":
+            self.__showImages()
         else:
             print "Unknown key ", Event.keystring
         self.__displayParams()
