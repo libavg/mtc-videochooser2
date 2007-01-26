@@ -4,7 +4,8 @@
 import sys, os, math, stat
 from libavg import avg
 from libavg import anim
-from Calibrator import *
+from CamCalibrator import *
+from CoordCalibrator import *
 from scrollbar import *
 from videoinfo import *
 
@@ -125,8 +126,8 @@ def removeVideoNodes():
 
 def startVideos():
     global isSeeking
-    global Cal
-    if not(Cal.isActive()):
+    global CamCal
+    if not(CamCal.isActive()):
         VideoArea = Player.getElementByID("videos")
         MainVideo = Player.getElementByID("mainvideo")
         for i in range(0, VideoArea.getNumChildren()):
@@ -201,13 +202,25 @@ def getVideoViewportWidth():
     global curVideoInfos
     return len(curVideoInfos)*(VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)
 
+def activateFingers():
+    global Tracker
+    global ShowFingers
+    if ShowFingers:
+        Player.getElementByID("fingers").active = 1
+    else:
+        Player.getElementByID("fingers").active = 0
+    Tracker.setDebugImages(False, ShowFingers)
+    
 def onKeyUp():
-    global Cal
+    global CamCal
+    global CoordCal
     global Player
+    global ShowFingers
+    global Tracker
     Event = Player.getCurEvent()
     if Event.keystring == "t":
-        Cal.switchActive()
-        if Cal.isActive():
+        CamCal.switchActive(ShowFingers)
+        if CamCal.isActive():
             VideoArea = Player.getElementByID("videos")
             for i in range(0, VideoArea.getNumChildren()):
                 CurVideoArea = VideoArea.getChild(i)
@@ -216,8 +229,22 @@ def onKeyUp():
             mainVideo = Player.getElementByID("mainvideo")
             if mainVideo.href != "":
                 mainVideo.pause()
-    elif Cal.isActive():
-        Cal.onKeyUp(Event)
+            Player.getElementByID("fingers").active = 1
+        else:
+            activateFingers()
+    elif Event.keystring == "c":
+        if not(CamCal.isActive()) and not(CoordCal):
+            CoordCal = CoordCalibrator(Tracker, Player)
+    elif Event.keystring == "f":
+        ShowFingers = not(ShowFingers)
+        if not(CamCal.isActive()):
+            activateFingers()
+    elif CamCal.isActive():
+        CamCal.onKeyUp(Event)
+    elif CoordCal:
+        Ok = CoordCal.onKeyUp(Event)
+        if not(Ok):
+            CoordCal = None
 
 Player = avg.Player()
 Log = avg.Logger.get()
@@ -245,5 +272,8 @@ sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6,
 Player.setInterval(10, onFrame)
 addControls()
 Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")
-Cal = Calibrator(Tracker, Player)
+CamCal = CamCalibrator(Tracker, Player)
+CoordCal = None
+ShowFingers = False;
+activateFingers()
 Player.play()

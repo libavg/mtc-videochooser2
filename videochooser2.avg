@@ -12,9 +12,8 @@
       </div>
       <image id="videobottom" y="150" opacity="0.66" href="images/VideoBottom.png"/>
     </div>
-    <div id="calibrator" opacity="0" active="false">
+    <div id="camcalibrator" opacity="0" active="false">
       <image id="border" x="0" y="0" width="1280" height="720" href="../images/border.png"/>
-      <image id="fingers" x="1" y="1" width="1278" height="710"/>
       <div id="tracking" x="300" y="32">
         <words x="0" y="13" text="camera" size="16" font="Eurostile"/>
         <image x="0" y="32" href="../images/CamImgBorder.png"/>
@@ -45,4 +44,9 @@
         <words id="param10" x="418" y="194" size="13" font="Eurostile"/> 
       </div>
     </div>
+    <div id="coordcalibrator" opacity="0" active="false" ontouchup="onCoordCalTouchUp">
+      <image x="0" y="0" width="1280" height="720" href="../images/border.png"/>
+      <image id="crosshair" href="../images/Crosshair.png"/>
+    </div>
+    <image id="fingers" x="1" y="1" width="1278" height="710" active="false"/>
 </avg>

@@ -6,15 +6,12 @@ import sys, os, math, stat
 from libavg import avg
 from libavg import anim
 
-global gCalibrator
 global gPlayer
 
-class Calibrator:
+class CamCalibrator:
     def __init__(self, Tracker, Player):
-        global gCalibrator
         global gPlayer
         gPlayer = Player
-        gCalibrator = self
         self.__isActive = False
         self.__Tracker = Tracker
         self.__showSmallBmps = True
@@ -36,6 +33,7 @@ class Calibrator:
                 Param['id'] = Param['Name']
         self.__curParam = 0
         self.__saveIndex = 0
+        self.__onFrameID = gPlayer.setInterval(1, self.onFrame)
     def __flipBitmap(self, ImgName):
         Node = gPlayer.getElementByID(ImgName)
         for y in range(Node.getNumVerticesY()):
@@ -84,26 +82,25 @@ class Calibrator:
         self.__Tracker.setDebugImages(self.__showSmallBmps, True)
         gPlayer.getElementByID("tracking").active = self.__showSmallBmps
     def onFrame(self):
-        if self.__showSmallBmps:
+        if self.__showSmallBmps and self.__isActive:
             self.__updateBitmap("camera", avg.IMG_CAMERA)
             self.__updateBitmap("distorted", avg.IMG_DISTORTED)
             self.__updateBitmap("nohistory", avg.IMG_NOHISTORY)
             self.__updateBitmap("histogram", avg.IMG_HISTOGRAM)
         self.__updateBitmap("fingers", avg.IMG_FINGERS)
-    def switchActive(self):
+    def switchActive(self, ShowFingers):
         global gPlayer
         if self.__isActive:
             self.__isActive = False
-            gPlayer.getElementByID("calibrator").active = 0
-            gPlayer.getElementByID("calibrator").opacity = 0
-            gPlayer.clearInterval(self.__onFrameID)
+            gPlayer.getElementByID("camcalibrator").active = 0
+            gPlayer.getElementByID("camcalibrator").opacity = 0
+#            gPlayer.clearInterval(self.__onFrameID)
         else:
             self.__isActive = True
-            gPlayer.getElementByID("calibrator").active = 1 
-            gPlayer.getElementByID("calibrator").opacity = 1 
-            self.__onFrameID = gPlayer.setInterval(1, self.onFrame)
+            gPlayer.getElementByID("camcalibrator").active = 1 
+            gPlayer.getElementByID("camcalibrator").opacity = 1 
             self.__displayParams()
-        self.__Tracker.setDebugImages(self.__showSmallBmps, self.__isActive)
+        self.__Tracker.setDebugImages(self.__showSmallBmps, self.__isActive or ShowFingers)
     def onKeyUp(self, Event):
         if Event.keystring == "up":
             if self.__curParam > 0:
