@@ -46,7 +46,8 @@
     </div>
     <div id="coordcalibrator" opacity="0" active="false" ontouchup="onCoordCalTouchUp">
       <image x="0" y="0" width="1280" height="720" href="../images/border.png"/>
+      <div id="messages" x="100" y="100"/>
       <image id="crosshair" href="../images/Crosshair.png"/>
     </div>
-    <image id="fingers" x="1" y="1" width="1278" height="710" active="false"/>
+    <image id="fingers" x="1" y="1" width="1278" height="710" active="false" sensitive="false"/>
 </avg>
