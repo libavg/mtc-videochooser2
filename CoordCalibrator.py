@@ -60,10 +60,11 @@ class CoordCalibrator:
             self.__CurPointIndex += 1
             self.__moveMarker()
             if not(Ok):
+                self.__Tracker.endCalibration()
                 gCoordCal = None
             return Ok
         elif Event.keystring == "a":
-            self.__CPPCal.abort()
+            self.__Tracker.abortCalibration()
             gCoordCal = None
             return False
         return True
