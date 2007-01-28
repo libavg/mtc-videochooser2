@@ -21,8 +21,6 @@ class CamCalibrator:
             {'Name':"gamma", 'min':0, 'max':1, 'increment':1, 'precision':0},
             {'Name':"shutter", 'min':1, 'max':533, 'increment':1, 'precision':0},
             {'Name':"gain", 'min':16, 'max':64, 'increment':1, 'precision':0},
-            {'Name':"trapezoid", 'min':0, 'max':1, 'increment':0.01, 'precision':2},
-            {'Name':"barrel", 'min':0, 'max':2, 'increment':0.01, 'precision':2},
             {'Name':"left", 'id':"roileft", 'min':0, 'max':320, 'increment':1, 'precision':0},
             {'Name':"top", 'id':"roitop", 'min':0, 'max':240, 'increment':1, 'precision':0},
             {'Name':"right", 'id':"roiright", 'min':320, 'max':640, 'increment':1, 'precision':0},
