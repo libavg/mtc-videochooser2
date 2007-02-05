@@ -271,7 +271,7 @@ sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6,
         14+VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH, VIDEO_AREA_WIDTH-12, 1000)
 Player.setInterval(10, onFrame)
 addControls()
-Tracker = Player.addTracker("/dev/video1394/0", 60, "640x480_MONO8")
+Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")
 CamCal = CamCalibrator(Tracker, Player)
 CoordCal = None
 ShowFingers = False;
