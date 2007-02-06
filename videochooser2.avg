@@ -2,15 +2,19 @@
 <!DOCTYPE avg SYSTEM "../../libavg/doc/avg.dtd">
 <avg id="main" width="1280" height="720" onkeyup="onKeyUp">
     <image x="0" y="0" href="images/Background.png"/>
-    <div id="videospace" x="341" y="16">
-        <video id="mainvideo" x="0" y="0" width="544" height="408" href="" loop="1"/>
+    <div id="videospace" x="345" y="56">
+        <image id="topborder" x="0" y="0" href="images/Info.png"/>
+        <div id="mainvideocrop" x="26" y="26" width="615" height="346">
+            <video id="mainvideo" x="0" y="-58" width="615" height="461" href="" loop="1"/>
+        </div>
     </div>
-    <div id="videoarea" x="128" y="480" width="1024" height="180">
-      <image id="videotop" href="images/VideoTop.png" opacity="0.66"/>
-      <div id="videoslider" x="0" y="0" width="1214" height="357">
+    <image x="65" y="480" href="images/multitouch.png" opacity="0.9"/>
+    <div id="videoarea" x="38" y="501" width="1201" height="209">
+      <image id="videotop" href="images/VideoTop.png"/>
+      <div id="videoslider" x="16" y="12" width="1169" height="151">
         <div id="videos" x="0" y="0"/>
       </div>
-      <image id="videobottom" y="150" opacity="0.66" href="images/VideoBottom.png"/>
+      <image id="videobottom" y="163" x="-1" href="images/VideoBottom.png"/>
     </div>
     <div id="camcalibrator" opacity="0" active="false">
       <image id="border" x="0" y="0" width="1280" height="720" href="../images/border.png"/>

@@ -10,12 +10,12 @@ from scrollbar import *
 from videoinfo import *
 
 BORDER_WIDTH=4
-VIDEO_THUMBNAIL_WIDTH=160
-VIDEO_THUMBNAIL_HEIGHT=120
-#VIDEO_DIR="/home/uzadow/wos_videos/"
+VIDEO_THUMBNAIL_WIDTH=225
+VIDEO_THUMBNAIL_HEIGHT=127
+VIDEO_DIR="/home/uzadow/wos_videos/"
 #VIDEO_DIR="/home/mtc/"
-VIDEO_DIR="/Users/uzadow/wos_videos/"
-VIDEO_AREA_WIDTH=1024
+#VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_AREA_WIDTH=1169
 
 ourSelectedVideo = -1
 curDir = -1
@@ -25,17 +25,14 @@ def videoMouseOver():
     Event = Player.getCurEvent()
     videoIndex = int(Event.node.id[5:])
     Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
-    Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.5
 
 def videoMouseOut():
     Event = Player.getCurEvent()
     videoIndex = int(Event.node.id[5:])
     if videoIndex == ourSelectedVideo:
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.67
-        Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.0
     else:
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.0
-        Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.67
 
 def videoMouseUp():
     Event = Player.getCurEvent()
@@ -45,8 +42,8 @@ def videoMouseUp():
 
 def addControls():
     global seekScrollBar
-    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 8, 364, 
-            528, 1000)
+    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 25, 370, 
+            619, 1000)
     seekScrollBar.setSlider(0.0, 100)
     seekScrollBar.setCallbacks(onSeekControlStart, onSeekControlMove, onSeekControlStop)
 
@@ -79,14 +76,6 @@ def initVideoNodes():
         videoDiv.x = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*index
         Player.getElementByID("videos").addChild(videoDiv)
         
-        node = Player.createNode("<image id='videounselected"+str(index)+
-                "' href='images/Video.png'/>")
-        node.y = 22
-        node.width = VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2
-        node.height = VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH*2
-        node.opacity = 0.666
-        videoDiv.addChild(node)
-        
         node = Player.createNode("<image id='videoselected"+str(index)+
                 "' href='images/VideoSelected.png'/>")
         node.y = 22
@@ -98,11 +87,17 @@ def initVideoNodes():
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
                 "' loop='true' onmouseover='videoMouseOver' onmouseout='videoMouseOut' "
                 "onmouseup='videoMouseUp' ontouchdown='videoMouseUp'/>")
-        node.x = BORDER_WIDTH
-        node.y = 22+BORDER_WIDTH
-        node.height = VIDEO_THUMBNAIL_HEIGHT
+        node.x = 0 
+        node.y = (VIDEO_THUMBNAIL_HEIGHT-(VIDEO_THUMBNAIL_WIDTH*3/4))/2
+        node.height = VIDEO_THUMBNAIL_WIDTH*3/4
         node.width = VIDEO_THUMBNAIL_WIDTH
-        videoDiv.addChild(node)
+        cropDiv = Player.createNode("<div id='crop"+str(index)+"'/>")
+        cropDiv.x = BORDER_WIDTH
+        cropDiv.y = 19+BORDER_WIDTH
+        cropDiv.height = VIDEO_THUMBNAIL_HEIGHT
+        cropDiv.width = VIDEO_THUMBNAIL_WIDTH
+        cropDiv.addChild(node)
+        videoDiv.addChild(cropDiv)
 
         node = Player.createNode("<words/>")
         node.x = BORDER_WIDTH+2
@@ -132,7 +127,7 @@ def startVideos():
         MainVideo = Player.getElementByID("mainvideo")
         for i in range(0, VideoArea.getNumChildren()):
             CurVideoArea = VideoArea.getChild(i)
-            CurVideo = CurVideoArea.getChild(2)
+            CurVideo = CurVideoArea.getChild(1).getChild(0)
             videoPos = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*i-sb.getPos()
             if i == ourSelectedVideo:
                 if isSeeking:
@@ -152,10 +147,8 @@ def selectVideo(selectedVideo):
     if ourSelectedVideo != selectedVideo:
         if ourSelectedVideo != -1:
             Player.getElementByID("videoselected"+str(ourSelectedVideo)).opacity=0.0
-            Player.getElementByID("videounselected"+str(ourSelectedVideo)).opacity=0.67
         ourSelectedVideo = selectedVideo
         Player.getElementByID("videoselected"+str(ourSelectedVideo)).opacity=0.67
-        Player.getElementByID("videounselected"+str(ourSelectedVideo)).opacity=0.0
         mainVideo = Player.getElementByID("mainvideo")
         smallVideo = Player.getElementByID("video"+str(ourSelectedVideo))
         mainVideo.href=VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+curVideoInfos[ourSelectedVideo].videoFile
@@ -224,7 +217,7 @@ def onKeyUp():
             VideoArea = Player.getElementByID("videos")
             for i in range(0, VideoArea.getNumChildren()):
                 CurVideoArea = VideoArea.getChild(i)
-                CurVideo = CurVideoArea.getChild(2)
+                CurVideo = CurVideoArea.getChild(1).getChild(0)
                 CurVideo.pause()
             mainVideo = Player.getElementByID("mainvideo")
             if mainVideo.href != "":
@@ -267,8 +260,8 @@ Log.setCategories(Log.APP |
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
 Player.setVBlankFramerate(1)
-sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6, 
-        14+VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH, VIDEO_AREA_WIDTH-12, 1000)
+sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
+        35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setInterval(10, onFrame)
 addControls()
 Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")

@@ -56,28 +56,30 @@ class ScrollBar:
         self.__sliderPos = 0
         self.__sliderWidth = 100
         self.__sliderRange = sliderRange
+        self.__endWidth = 5
+        self.__scrollerEndWidth = 7
         parentNode.addChild(self.__node)
         
-        node = player.createNode("<image href='images/ScrollbarEnd.png' x='0' y='0'/>")
-        self.__node.addChild(node)
-        
-        node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0' "
+        node = player.createNode("<image href='images/Scrollbar.png' x='0' y='0' "
                 "onmouseup='ScrollerMouseUp' onmousemove='ScrollerMouseMove' "
                 "onmouseout='ScrollerMouseOut' "
                 "ontouchup='ScrollerMouseUp' ontouchmove='ScrollerMouseMove' "
                 "/>")
         node.id = "scrollerbg"+str(numScrollBars)
+        node.x = 1 
         node.width=width-2
-        node.height=50
         scrollBarRegistry[node.id] = self
         self.__node.addChild(node)
         
+        node = player.createNode("<image href='images/ScrollbarBegin.png' x='0' y='0'/>")
+        self.__node.addChild(node)
+        
         node = player.createNode("<image href='images/ScrollbarEnd.png' y='0'/>")
-        node.x = width-1
+        node.x = width-self.__endWidth
         self.__node.addChild(node)
         
         self.__sliderStartNode = player.createNode(
-                "<image href='images/ScrollbarScrollerEnd.png'/>")
+                "<image href='images/ScrollbarScrollerBegin.png'/>")
         self.__node.addChild(self.__sliderStartNode)
         self.__sliderNode = player.createNode(
                 "<image href='images/ScrollbarScroller.png' "
