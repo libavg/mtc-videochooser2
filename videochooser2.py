@@ -12,9 +12,9 @@ from videoinfo import *
 BORDER_WIDTH=4
 VIDEO_THUMBNAIL_WIDTH=225
 VIDEO_THUMBNAIL_HEIGHT=127
-VIDEO_DIR="/home/uzadow/wos_videos/"
+#VIDEO_DIR="/home/uzadow/wos_videos/"
 #VIDEO_DIR="/home/mtc/"
-#VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_DIR="/Users/uzadow/wos_videos/"
 VIDEO_AREA_WIDTH=1169
 
 ourSelectedVideo = -1

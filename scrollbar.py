@@ -4,42 +4,25 @@ numScrollBars=0
 global scrollBarRegistry
 scrollBarRegistry={}
 global ourPlayer
-global ourLastScrollPos
-global ourIsScrolling
-ourIsScrolling=False
 
 def ScrollerMouseDown():
-    global ourLastScrollPos
-    global ourIsScrolling
-    ourIsScrolling = True
     Event = ourPlayer.getCurEvent()
-    ourLastScrollPos = Event.x
-    Event.node.setEventCapture(Event.cursorid)
     scrollBar = scrollBarRegistry[Event.node.id]
-    scrollBar.onMoveStart()
+    scrollBar.ScrollerMouseDown(Event)
 
 def ScrollerMouseMove():
-    global ourLastScrollPos
-    global ourIsScrolling
-    if ourIsScrolling:
-        Event = ourPlayer.getCurEvent()
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.move(Event.x-ourLastScrollPos)
-        ourLastScrollPos = Event.x
-
+    Event = ourPlayer.getCurEvent()
+    scrollBar = scrollBarRegistry[Event.node.id]
+    scrollBar.ScrollerMouseMove(Event)
 def ScrollerMouseUp():
-    global ourIsScrolling
-    if ourIsScrolling:
-        ourIsScrolling = False
-        Event = ourPlayer.getCurEvent()
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.onMoveStop()
-        Event.node.releaseEventCapture(Event.cursorid)
+    Event = ourPlayer.getCurEvent()
+    scrollBar = scrollBarRegistry[Event.node.id]
+    scrollBar.ScrollerMouseUp(Event)
 
 def ScrollerMouseOut():
-    global ourIsScrolling
-    if ourIsScrolling:
-        print ("out?!")        
+    Event = ourPlayer.getCurEvent()
+    scrollBar = scrollBarRegistry[Event.node.id]
+    scrollBar.ScrollerMouseOut(Event)
 
 class ScrollBar:
     def __init__(self, player, parentNode, x, y, width, sliderRange):
@@ -86,6 +69,7 @@ class ScrollBar:
                 "onmousedown='ScrollerMouseDown' onmouseup='ScrollerMouseUp' "
                 "onmousemove='ScrollerMouseMove' "
                 "ontouchdown='ScrollerMouseDown' ontouchup='ScrollerMouseUp' "
+                "ontouchmove='ScrollerMouseMove' "
                 "/>")
         self.__sliderNode.id = "scroller"+str(numScrollBars)
         self.__node.addChild(self.__sliderNode)
@@ -97,9 +81,30 @@ class ScrollBar:
         self.__startCallback = None
         self.__moveCallback = None
         self.__stopCallback = None
+        self.LastScrollPos = 0
+        self.CurCursor = None
         self.__positionSlider()
         numScrollBars+=1
         scrollBarRegistry[self.__sliderNode.id] = self
+    def ScrollerMouseUp(self, event):
+        if self.CurCursor == event.cursorid:
+            self.CurCursor = None
+            self.onMoveStop()
+            event.node.releaseEventCapture(event.cursorid)
+    def ScrollerMouseMove(self, event):
+        if self.CurCursor == event.cursorid:
+            self.move(event.x-self.LastScrollPos)
+            self.LastScrollPos = event.x
+    def ScrollerMouseDown(self, event):
+        if (self.CurCursor is not None) and self.CurCursor != event.cursorid:
+            return
+        self.CurCursor = event.cursorid
+        self.LastScrollPos = event.x
+        event.node.setEventCapture(event.cursorid)
+        self.onMoveStart()
+    def ScrollerMouseOut(self, event):
+        if self.CurCursor == event.cursorid:
+            print ("out?!")        
 
     def setRange(self, range):
         self.__sliderRange = range
@@ -145,7 +150,10 @@ class ScrollBar:
         self.__sliderStartNode.x = startPos+1
         self.__sliderNode.x = startPos+2
         width = int((float(self.__sliderWidth)/self.__sliderRange)*self.__width)
+        if width < 40:
+            width = 40
         self.__sliderNode.width = width-2
         self.__sliderNode.height = 50
         self.__sliderEndNode.x = startPos+width
+
 
