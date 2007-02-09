@@ -81,7 +81,8 @@ class ScrollBar:
         self.__startCallback = None
         self.__moveCallback = None
         self.__stopCallback = None
-        self.LastScrollPos = 0
+        self.__startScrollCursor = 0
+        self.__startScrollPos = 0
         self.CurCursor = None
         self.__positionSlider()
         numScrollBars+=1
@@ -93,13 +94,16 @@ class ScrollBar:
             event.node.releaseEventCapture(event.cursorid)
     def ScrollerMouseMove(self, event):
         if self.CurCursor == event.cursorid:
-            self.move(event.x-self.LastScrollPos)
-            self.LastScrollPos = event.x
+            pixelsMoved = event.x-self.__startScrollCursor
+            sbMoved = float(pixelsMoved)/(self.__width-1)*self.__sliderRange
+            newPos = self.__startScrollPos+sbMoved
+            self.moveTo(newPos)
     def ScrollerMouseDown(self, event):
         if (self.CurCursor is not None) and self.CurCursor != event.cursorid:
             return
         self.CurCursor = event.cursorid
-        self.LastScrollPos = event.x
+        self.__startScrollCursor = event.x
+        self.__startScrollPos = self.__sliderPos
         event.node.setEventCapture(event.cursorid)
         self.onMoveStart()
     def ScrollerMouseOut(self, event):
@@ -113,6 +117,9 @@ class ScrollBar:
     def setSlider(self, pos, width):
         self.__sliderPos = pos
         self.__sliderWidth = width
+        widthInPixels = int((float(self.__sliderWidth)/self.__sliderRange)*self.__width)
+        if widthInPixels < 40:
+            self.__sliderWidth = (self.__sliderRange*40)/self.__width
         self.__positionSlider()
 
     def setCallbacks(self, startCallback, moveCallback, stopCallback):
@@ -123,18 +130,15 @@ class ScrollBar:
     def getPos(self):
         return self.__sliderPos
 
-    def move(self, offset):
-        # Offset is in pixels
-        realOffset = float(offset)/(self.__width-1)*self.__sliderRange
-        self.__sliderPos += realOffset
+    def moveTo(self, pos):
+        self.__sliderPos = pos
         if self.__sliderPos > self.__sliderRange-self.__sliderWidth:
             self.__sliderPos = self.__sliderRange-self.__sliderWidth
         if self.__sliderPos < 0:
             self.__sliderPos = 0
-        if self.__positionSlider != None:
-            self.__positionSlider()
-            if self.__moveCallback != None:
-                self.__moveCallback(self.__sliderPos)
+        self.__positionSlider()
+        if self.__moveCallback != None:
+            self.__moveCallback(self.__sliderPos)
 
     def onMoveStart(self):
         if self.__startCallback != None:
@@ -150,8 +154,6 @@ class ScrollBar:
         self.__sliderStartNode.x = startPos+1
         self.__sliderNode.x = startPos+2
         width = int((float(self.__sliderWidth)/self.__sliderRange)*self.__width)
-        if width < 40:
-            width = 40
         self.__sliderNode.width = width-2
         self.__sliderNode.height = 50
         self.__sliderEndNode.x = startPos+width
