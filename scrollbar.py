@@ -158,4 +158,3 @@ class ScrollBar:
         self.__sliderNode.height = 50
         self.__sliderEndNode.x = startPos+width
 
-

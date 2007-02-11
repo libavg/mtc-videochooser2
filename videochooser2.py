@@ -13,8 +13,8 @@ BORDER_WIDTH=4
 VIDEO_THUMBNAIL_WIDTH=225
 VIDEO_THUMBNAIL_HEIGHT=127
 #VIDEO_DIR="/home/uzadow/wos_videos/"
-#VIDEO_DIR="/home/mtc/"
-VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_DIR="/home/mtc/"
+#VIDEO_DIR="/Users/uzadow/wos_videos/"
 VIDEO_AREA_WIDTH=1169
 
 ourSelectedVideo = -1
@@ -239,6 +239,43 @@ def onKeyUp():
         if not(Ok):
             CoordCal = None
 
+Cursors = {}
+
+def onTouchDown():
+    global CamCal
+    global Player
+    Event = Player.getCurEvent()
+    if CamCal.isActive():
+        c_id = "cursor%s"%Event.cursorid
+        node = Cursors[Event.cursorid] = Player.createNode("<div><words text='%s'/><image href='../images/Cursor.png' id='%s'/></div>"%(c_id,c_id))
+        node.x = Event.x-8
+        node.y = Event.y-8
+        Player.getElementByID('camcalibrator').addChild(node)
+def onTouchUp():
+    global CamCal
+    global Player
+    Event = Player.getCurEvent()
+    if CamCal.isActive():
+        try:
+            node = Cursors[Event.cursorid]
+        except KeyError:
+            return
+        calnode = Player.getElementByID('camcalibrator')
+        calnode.removeChild(
+                calnode.indexOf(node))
+
+def onTouchMotion():
+    global CamCal
+    global Player
+    Event = Player.getCurEvent()
+    if CamCal.isActive():
+        try:
+            node = Cursors[Event.cursorid]
+        except KeyError:
+            return
+        node.x = Event.x-8
+        node.y = Event.y-8
+
 Player = avg.Player()
 Log = avg.Logger.get()
 bDebug = not(os.getenv('AVG_DEPLOY'))
@@ -251,20 +288,20 @@ Log.setCategories(Log.APP |
                   Log.WARNING | 
                   Log.PROFILE |
 #                 Log.PROFILE_LATEFRAMES |
-                  Log.CONFIG  
+                  Log.CONFIG | 
 #                 Log.MEMORY  |
 #                 Log.BLTS    
-#                  Log.EVENTS |
-#                  Log.EVENTS2
+                  Log.EVENTS| 
+                  Log.EVENTS2
                  )
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
-Player.setVBlankFramerate(1)
+Player.setFramerate(60)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setInterval(10, onFrame)
 addControls()
-Tracker = Player.addTracker("/dev/video1394/0", 30, "640x480_MONO8")
+Tracker = Player.addTracker("/dev/video1394/0", 60, "640x480_MONO8")
 CamCal = CamCalibrator(Tracker, Player)
 CoordCal = None
 ShowFingers = False;

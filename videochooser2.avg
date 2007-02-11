@@ -16,7 +16,7 @@
       </div>
       <image id="videobottom" y="163" x="-1" href="images/VideoBottom.png"/>
     </div>
-    <div id="camcalibrator" opacity="0" active="false">
+    <div id="camcalibrator" opacity="0" active="false" ontouchdown="onTouchDown" ontouchup="onTouchUp" ontouchmove="onTouchMotion">
       <image id="border" x="0" y="0" width="1280" height="720" href="../images/border.png"/>
       <div id="tracking" x="300" y="32">
         <words x="0" y="13" text="camera" size="16" font="Eurostile"/>
@@ -46,7 +46,8 @@
         <words id="param8" x="418" y="194" size="13" font="Eurostile"/> 
       </div>
     </div>
-    <div id="coordcalibrator" opacity="0" active="false" ontouchup="onCoordCalTouchUp">
+    <image id="cursor" href="../images/Cursor.png" opacity="1"/>
+    <div id="coordcalibrator" opacity="0" active="false" ontouchdown="onCoordCalTouchDown">
       <image x="0" y="0" width="1280" height="720" href="../images/border.png"/>
       <div id="messages" x="100" y="100"/>
       <image id="crosshair" href="../images/Crosshair.png"/>
