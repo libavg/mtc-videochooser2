@@ -39,11 +39,6 @@
         <words id="param2" x="0" y="194" size="13" font="Eurostile"/> 
         <words id="param3" x="166" y="162" size="13" font="Eurostile"/> 
         <words id="param4" x="166" y="178" size="13" font="Eurostile"/> 
-        <words x="332" y="162" size="13" font="Eurostile" text="ROI" color="A0A0FF"/>
-        <words id="param5" x="348" y="178" size="13" font="Eurostile"/> 
-        <words id="param6" x="418" y="178" size="13" font="Eurostile"/> 
-        <words id="param7" x="348" y="194" size="13" font="Eurostile"/> 
-        <words id="param8" x="418" y="194" size="13" font="Eurostile"/> 
       </div>
     </div>
     <image id="cursor" href="../images/Cursor.png" opacity="1"/>
