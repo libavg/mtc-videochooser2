@@ -15,7 +15,7 @@ class CoordCalibrator:
         gCoordCal = self
         self.__Tracker = Tracker
         self.__CurPointIndex = 0
-        self.__CPPCal = self.__Tracker.startCalibration(1280,720)
+        self.__CPPCal = self.__Tracker.startCalibration()
         self.__LastCenter = None
         self.__NumMessages = 0
         gPlayer.getElementByID("coordcalibrator").active = True
