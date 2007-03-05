@@ -43,8 +43,8 @@ class CamCalibrator:
             Node.width=Bitmap.getSize()[0]/4
             Node.height=Bitmap.getSize()[1]/4
         else:
-            Node.width = 1278
-            Node.height = 718
+            Node.width = 1280
+            Node.height = 720
         self.__flipBitmap(ImgName)
     def __getParam(self, Name):
         return getattr(self.__Tracker, Name)
