@@ -113,9 +113,6 @@ class CamCalibrator:
         elif Event.keystring == "h":
             self.__Tracker.resetHistory()
             print "History reset"
-        elif Event.keystring == "s":
-            self.__Tracker.saveConfig()
-            print ("Tracker configuration saved.")
         elif Event.keystring == "w":
             self.__saveIndex += 1
             self.__Tracker.getImage(avg.IMG_CAMERA).save("img"+str(self.__saveIndex)+"_camera.png")
