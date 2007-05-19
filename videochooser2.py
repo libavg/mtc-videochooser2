@@ -4,15 +4,18 @@
 import sys, os, math, stat
 from libavg import avg
 from libavg import anim
+from CamCalibrator import *
+from CoordCalibrator import *
 from scrollbar import *
 from videoinfo import *
 
-BORDER_WIDTH=16
-VIDEO_THUMBNAIL_WIDTH=380
-VIDEO_THUMBNAIL_HEIGHT=285
+BORDER_WIDTH=4
+VIDEO_THUMBNAIL_WIDTH=225
+VIDEO_THUMBNAIL_HEIGHT=127
 #VIDEO_DIR="/home/uzadow/wos_videos/"
+#VIDEO_DIR="/home/mtc/"
 VIDEO_DIR="/Users/uzadow/wos_videos/"
-VIDEO_AREA_WIDTH=1842
+VIDEO_AREA_WIDTH=1169
 
 ourSelectedVideo = -1
 curDir = -1
@@ -22,17 +25,14 @@ def videoMouseOver():
     Event = Player.getCurEvent()
     videoIndex = int(Event.node.id[5:])
     Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
-    Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.5
 
 def videoMouseOut():
     Event = Player.getCurEvent()
     videoIndex = int(Event.node.id[5:])
     if videoIndex == ourSelectedVideo:
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.67
-        Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.0
     else:
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.0
-        Player.getElementByID("videounselected"+str(videoIndex)).opacity=0.67
 
 def videoMouseUp():
     Event = Player.getCurEvent()
@@ -41,36 +41,11 @@ def videoMouseUp():
         selectVideo(videoIndex)
 
 def addControls():
-    global fadeScrollBar
-    global tiltScrollBar
     global seekScrollBar
-    fadeScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 90, 
-            640, 1.1)
-    fadeScrollBar.setSlider(0, 0.1)
-    fadeScrollBar.setCallbacks(None, onFadeControlMove, onFadeControlStop)
-    tiltScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 180, 
-            640, 1.1)
-    tiltScrollBar.setSlider(0.5, 0.1)
-    tiltScrollBar.setCallbacks(None, onTiltControlMove, onTiltControlStop)
-    seekScrollBar = ScrollBar(Player, Player.getElementByID("controlarea"), 8, 270, 
-            640, 1000)
+    seekScrollBar = ScrollBar(Player, Player.getElementByID("videospace"), 25, 370, 
+            619, 1000)
     seekScrollBar.setSlider(0.0, 100)
     seekScrollBar.setCallbacks(onSeekControlStart, onSeekControlMove, onSeekControlStop)
-
-def onFadeControlMove(pos):
-    Player.getElementByID("fadecolor").opacity=pos
-
-def onFadeControlStop():
-    Player.getElementByID("fadecolor").opacity=0
-    fadeScrollBar.setSlider(0, 0.1)
-
-def onTiltControlMove(pos):
-    Player.getElementByID("mainvideo").angle=pos-0.5
-
-def onTiltControlStop():
-    global tiltScrollBar
-    Player.getElementByID("mainvideo").angle=0
-    tiltScrollBar.setSlider(0.5, 0.1)
 
 def onSeekControlStart():
     global isSeeking
@@ -101,34 +76,33 @@ def initVideoNodes():
         videoDiv.x = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*index
         Player.getElementByID("videos").addChild(videoDiv)
         
-        node = Player.createNode("<image id='videounselected"+str(index)+
-                "' href='images/Video.png'/>")
-        node.y = 43
-        node.width = VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2
-        node.height = VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH*2
-        node.opacity = 0.666
-        videoDiv.addChild(node)
-        
         node = Player.createNode("<image id='videoselected"+str(index)+
                 "' href='images/VideoSelected.png'/>")
-        node.y = 43
+        node.y = 22
         node.width = VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2
         node.height = VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH*2
         node.opacity = 0
         videoDiv.addChild(node)
         
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
-                "' loop='true' threaded='true' oncursorover='videoMouseOver' oncursorout='videoMouseOut' oncursorup='videoMouseUp'/>")
-        node.x = BORDER_WIDTH
-        node.y = 43+BORDER_WIDTH
-        node.height = VIDEO_THUMBNAIL_HEIGHT
+                "' loop='true' threaded='false' oncursorover='videoMouseOver' oncursorout='videoMouseOut' "
+                "oncursorup='videoMouseUp'/>")
+        node.x = 0 
+        node.y = (VIDEO_THUMBNAIL_HEIGHT-(VIDEO_THUMBNAIL_WIDTH*3/4))/2
+        node.height = VIDEO_THUMBNAIL_WIDTH*3/4
         node.width = VIDEO_THUMBNAIL_WIDTH
-        videoDiv.addChild(node)
+        cropDiv = Player.createNode("<div id='crop"+str(index)+"'/>")
+        cropDiv.x = BORDER_WIDTH
+        cropDiv.y = 19+BORDER_WIDTH
+        cropDiv.height = VIDEO_THUMBNAIL_HEIGHT
+        cropDiv.width = VIDEO_THUMBNAIL_WIDTH
+        cropDiv.addChild(node)
+        videoDiv.addChild(cropDiv)
 
         node = Player.createNode("<words/>")
-        node.x = 22
-        node.y = 6 
-        node.size = 30
+        node.x = BORDER_WIDTH+2
+        node.y = 3 
+        node.size = 14
         node.font = "EurostileCondensed" 
         node.color = "F39C01"
         node.text = title
@@ -147,23 +121,25 @@ def removeVideoNodes():
 
 def startVideos():
     global isSeeking
-    VideoArea = Player.getElementByID("videos")
-    MainVideo = Player.getElementByID("mainvideo")
-    for i in range(0, VideoArea.getNumChildren()):
-        CurVideoArea = VideoArea.getChild(i)
-        CurVideo = CurVideoArea.getChild(2)
-        videoPos = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*i-sb.getPos()
-        if i == ourSelectedVideo:
-            if isSeeking:
-                CurVideo.pause()
-                MainVideo.pause()
-            else:
+    global CamCal
+    if not(CamCal.isActive()):
+        VideoArea = Player.getElementByID("videos")
+        MainVideo = Player.getElementByID("mainvideo")
+        for i in range(0, VideoArea.getNumChildren()):
+            CurVideoArea = VideoArea.getChild(i)
+            CurVideo = CurVideoArea.getChild(1).getChild(0)
+            videoPos = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*i-sb.getPos()
+            if i == ourSelectedVideo:
+                if isSeeking:
+                    CurVideo.pause()
+                    MainVideo.pause()
+                else:
+                    CurVideo.play()
+                    MainVideo.play()
+            elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1024:
                 CurVideo.play()
-                MainVideo.play()
-        elif videoPos > -VIDEO_THUMBNAIL_WIDTH and videoPos < 1854:
-            CurVideo.play()
-        else:
-            CurVideo.pause()
+            else:
+                CurVideo.pause()
 
 def selectVideo(selectedVideo):
     global ourSelectedVideo
@@ -171,26 +147,13 @@ def selectVideo(selectedVideo):
     if ourSelectedVideo != selectedVideo:
         if ourSelectedVideo != -1:
             Player.getElementByID("videoselected"+str(ourSelectedVideo)).opacity=0.0
-            Player.getElementByID("videounselected"+str(ourSelectedVideo)).opacity=0.67
         ourSelectedVideo = selectedVideo
         Player.getElementByID("videoselected"+str(ourSelectedVideo)).opacity=0.67
-        Player.getElementByID("videounselected"+str(ourSelectedVideo)).opacity=0.0
         mainVideo = Player.getElementByID("mainvideo")
         smallVideo = Player.getElementByID("video"+str(ourSelectedVideo))
         mainVideo.href=VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+curVideoInfos[ourSelectedVideo].videoFile
         mainVideo.play()
         mainVideo.seekToFrame(smallVideo.getCurFrame())
-        videoInfo = curVideoInfos[ourSelectedVideo]
-        Player.getElementByID("infotitle").text=videoInfo.title
-        Player.getElementByID("infotext").text=videoInfo.description
-        if videoInfo.imageFile1 != "":
-            Player.getElementByID("infoimage1").href="images/storyboard/"+videoInfo.imageFile1
-        else:
-            Player.getElementByID("infoimage1").href=""
-        if videoInfo.imageFile2 != "":
-            Player.getElementByID("infoimage2").href="images/storyboard/"+videoInfo.imageFile2
-        else:
-            Player.getElementByID("infoimage2").href=""
 
 def selectDir(index):
     global curDir
@@ -208,18 +171,6 @@ def selectDir(index):
         ourSelectedVideo = -1
         mainVideo = Player.getElementByID("mainvideo")
         mainVideo.href = ""
-
-
-def selectcwars():
-    selectDir(0)
-    Player.getElementByID("dir1bkgnd").href="images/DirSelected.png"
-    Player.getElementByID("dir2bkgnd").href="images/Dir.png"
-
-def selectchill():
-    global Player
-    selectDir(1)
-    Player.getElementByID("dir1bkgnd").href="images/Dir.png"
-    Player.getElementByID("dir2bkgnd").href="images/DirSelected.png"
 
 def onFrame():
     global sb
@@ -244,29 +195,123 @@ def getVideoViewportWidth():
     global curVideoInfos
     return len(curVideoInfos)*(VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)
 
+def activateFingers():
+    global Tracker
+    global ShowFingers
+    if ShowFingers:
+        Player.getElementByID("fingers").active = 1
+    else:
+        Player.getElementByID("fingers").active = 0
+    Tracker.setDebugImages(False, ShowFingers)
+    
+def onKeyUp():
+    global CamCal
+    global CoordCal
+    global Player
+    global ShowFingers
+    global Tracker
+    Event = Player.getCurEvent()
+    if Event.keystring == "t":
+        CamCal.switchActive(ShowFingers)
+        if CamCal.isActive():
+            VideoArea = Player.getElementByID("videos")
+            for i in range(0, VideoArea.getNumChildren()):
+                CurVideoArea = VideoArea.getChild(i)
+                CurVideo = CurVideoArea.getChild(1).getChild(0)
+                CurVideo.pause()
+            mainVideo = Player.getElementByID("mainvideo")
+            if mainVideo.href != "":
+                mainVideo.pause()
+            Player.getElementByID("fingers").active = 1
+        else:
+            activateFingers()
+    elif Event.keystring == "s":
+        Tracker.saveConfig()
+        print ("Tracker configuration saved.")
+    elif Event.keystring == "c":
+        if not(CamCal.isActive()) and not(CoordCal):
+            CoordCal = CoordCalibrator(Tracker, Player)
+    elif Event.keystring == "f":
+        ShowFingers = not(ShowFingers)
+        if not(CamCal.isActive()):
+            activateFingers()
+    elif CamCal.isActive():
+        CamCal.onKeyUp(Event)
+    elif CoordCal:
+        Ok = CoordCal.onKeyUp(Event)
+        if not(Ok):
+            CoordCal = None
+
+Cursors = {}
+
+def onTouchDown():
+    pass
+#    global CamCal
+#    global Player
+#    Event = Player.getCurEvent()
+#    if CamCal.isActive():
+#        c_id = "cursor%s"%Event.cursorid
+#        node = Cursors[Event.cursorid] = Player.createNode("<div><words text='%s'/><image href='../images/Cursor.png' id='%s'/></div>"%(c_id,c_id))
+#        node.x = Event.x-8
+#        node.y = Event.y-8
+#        Player.getElementByID('camcalibrator').addChild(node)
+        
+def onTouchUp():
+    pass
+#    global CamCal
+#    global Player
+#    Event = Player.getCurEvent()
+#    if CamCal.isActive():
+#        try:
+#            node = Cursors[Event.cursorid]
+#        except KeyError:
+#            return
+#        calnode = Player.getElementByID('camcalibrator')
+#        calnode.removeChild(
+#                calnode.indexOf(node))
+
+def onTouchMotion():
+    pass
+#    global CamCal
+#    global Player
+#    Event = Player.getCurEvent()
+#    if CamCal.isActive():
+#        try:
+#            node = Cursors[Event.cursorid]
+#        except KeyError:
+#            return
+#        node.x = Event.x-8
+#        node.y = Event.y-8
+
 Player = avg.Player()
 Log = avg.Logger.get()
 bDebug = not(os.getenv('AVG_DEPLOY'))
 if (bDebug):
-    Player.setResolution(0, 0, 550, 0) 
+    Player.setResolution(0, 0, 0, 0) 
 else:
     Player.setResolution(1, 0, 0, 0)
-    Log.setFileDest("/var/log/cleuse.log")
+    Player.showCursor(False)
+#    Log.setFileDest("/var/log/cleuse.log")
 Log.setCategories(Log.APP |
                   Log.WARNING | 
                   Log.PROFILE |
 #                 Log.PROFILE_LATEFRAMES |
-                  Log.CONFIG  
+                  Log.CONFIG
 #                 Log.MEMORY  |
 #                 Log.BLTS    
-#                  Log.EVENTS |
-#                  Log.EVENTS2
+#                 Log.EVENTS| 
+#                 Log.EVENTS2
                  )
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
-Player.setVBlankFramerate(2)
-sb = ScrollBar(Player, Player.getElementByID("videoarea"), 6, 398, 
-        VIDEO_AREA_WIDTH, 1000)
+Player.setFramerate(60)
+sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
+        35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setInterval(10, onFrame)
 addControls()
+Tracker = Player.addTracker("/dev/video1394/0", 60, "640x480_MONO8")
+CamCal = CamCalibrator(Tracker, Player)
+CoordCal = None
+ShowFingers = False;
+activateFingers()
 Player.play()
