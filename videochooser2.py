@@ -23,22 +23,25 @@ isSeeking = False
 
 def videoMouseOver():
     Event = Player.getCurEvent()
-    videoIndex = int(Event.node.id[5:])
-    Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
+    if Event.source == avg.TOUCH:
+        videoIndex = int(Event.node.id[5:])
+        Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
 
 def videoMouseOut():
     Event = Player.getCurEvent()
-    videoIndex = int(Event.node.id[5:])
-    if videoIndex == ourSelectedVideo:
-        Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.67
-    else:
-        Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.0
+    if Event.source == avg.TOUCH:
+        videoIndex = int(Event.node.id[5:])
+        if videoIndex == ourSelectedVideo:
+            Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.67
+        else:
+            Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.0
 
 def videoMouseUp():
     Event = Player.getCurEvent()
-    if Event.node.id[:5] == "video":
-        videoIndex = int(Event.node.id[5:])
-        selectVideo(videoIndex)
+    if Event.source == avg.TOUCH:
+        if Event.node.id[:5] == "video":
+            videoIndex = int(Event.node.id[5:])
+            selectVideo(videoIndex)
 
 def addControls():
     global seekScrollBar
