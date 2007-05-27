@@ -23,13 +23,13 @@ isSeeking = False
 
 def videoMouseOver():
     Event = Player.getCurEvent()
-    if Event.source == avg.TOUCH:
+    if Event.source != avg.TRACK:
         videoIndex = int(Event.node.id[5:])
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
 
 def videoMouseOut():
     Event = Player.getCurEvent()
-    if Event.source == avg.TOUCH:
+    if Event.source != avg.TRACK:
         videoIndex = int(Event.node.id[5:])
         if videoIndex == ourSelectedVideo:
             Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.67
@@ -38,7 +38,7 @@ def videoMouseOut():
 
 def videoMouseUp():
     Event = Player.getCurEvent()
-    if Event.source == avg.TOUCH:
+    if Event.source != avg.TRACK:
         if Event.node.id[:5] == "video":
             videoIndex = int(Event.node.id[5:])
             selectVideo(videoIndex)

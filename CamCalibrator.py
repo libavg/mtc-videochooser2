@@ -131,7 +131,7 @@ class CamCalibrator:
 
 def onTouchDown():
     Event = gPlayer.getCurEvent()
-    if Event.source == avg.TOUCH:
+    if Event.source != avg.TRACK:
         Node = gPlayer.getElementByID("cursor") 
         Node.x = Event.x-8
         Node.y = Event.y-8

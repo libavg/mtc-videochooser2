@@ -73,6 +73,6 @@ class CoordCalibrator:
 def onCoordCalTouchDown():
     global gCoordCal
     Event = gPlayer.getCurEvent()
-    if Event.source == avg.TOUCH:
+    if Event.source != avg.TRACK:
         gCoordCal.onTouchDown(Event)
 
