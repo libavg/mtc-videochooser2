@@ -27,6 +27,8 @@ class ScrollBar:
         node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0'/>")
         node.id = "scrollerbg"+str(numScrollBars)
         node.width=width-2
+        node.setEventHandler(avg.CURSORDOWN, avg.MOUSE, self.ScrollbarMouseDown);
+        node.setEventHandler(avg.CURSORDOWN, avg.TOUCH, self.ScrollbarMouseDown);
         node.setEventHandler(avg.CURSORUP, avg.MOUSE, self.ScrollerMouseUp);
         node.setEventHandler(avg.CURSORUP, avg.TOUCH, self.ScrollerMouseUp);
         node.setEventHandler(avg.CURSORMOTION, avg.MOUSE, self.ScrollerMouseMove);
@@ -82,6 +84,22 @@ class ScrollBar:
             sbMoved = float(pixelsMoved)/(self.__width-1)*self.__sliderRange
             newPos = self.__startScrollPos+sbMoved
             self.moveTo(newPos)
+    def ScrollbarMouseDown(self):
+        Event = ourPlayer.getCurEvent()
+        if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
+            return
+        relPos = Event.node.getRelXPos(Event.x)/self.__width
+        self.__sliderPos = relPos*self.__sliderRange -self.__sliderWidth/2
+        if self.__sliderPos < 0:
+            self.__sliderPos = 0
+        if self.__sliderPos > self.__sliderRange-self.__sliderWidth:
+            self.__sliderPos = self.__sliderRange-self.__sliderWidth
+        self.__positionSlider()
+        self.CurCursor = Event.cursorid
+        self.__startScrollCursor = Event.x
+        self.__startScrollPos = self.__sliderPos
+        Event.node.setEventCapture(Event.cursorid)
+        self.onMoveStart()
     def ScrollerMouseDown(self):
         Event = ourPlayer.getCurEvent()
         if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
@@ -128,7 +146,7 @@ class ScrollBar:
 
     def onMoveStart(self):
         if self.__startCallback != None:
-            self.__startCallback()
+            self.__startCallback(self.__sliderPos)
     
     def onMoveStop(self):
         if self.__stopCallback != None:

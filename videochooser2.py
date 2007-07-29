@@ -50,9 +50,10 @@ def addControls():
     seekScrollBar.setSlider(0.0, 100)
     seekScrollBar.setCallbacks(onSeekControlStart, onSeekControlMove, onSeekControlStop)
 
-def onSeekControlStart():
+def onSeekControlStart(pos):
     global isSeeking
     isSeeking = True
+    onSeekControlMove(pos)
 
 def onSeekControlMove(pos):
     if pos == 0:
