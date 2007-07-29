@@ -3,32 +3,7 @@ from libavg import avg
 
 global numScrollBars
 numScrollBars=0
-global scrollBarRegistry
-scrollBarRegistry={}
 global ourPlayer
-
-def ScrollerMouseDown():
-    Event = ourPlayer.getCurEvent()
-    if not(Event.source == avg.TRACK):
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.ScrollerMouseDown(Event)
-
-def ScrollerMouseMove():
-    Event = ourPlayer.getCurEvent()
-    if not(Event.source == avg.TRACK):
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.ScrollerMouseMove(Event)
-def ScrollerMouseUp():
-    Event = ourPlayer.getCurEvent()
-    if not(Event.source == avg.TRACK):
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.ScrollerMouseUp(Event)
-
-def ScrollerMouseOut():
-    Event = ourPlayer.getCurEvent()
-    if not(Event.source == avg.TRACK):
-        scrollBar = scrollBarRegistry[Event.node.id]
-        scrollBar.ScrollerMouseOut(Event)
 
 class ScrollBar:
     def __init__(self, player, parentNode, x, y, width, sliderRange):
@@ -49,14 +24,16 @@ class ScrollBar:
         self.__scrollerEndWidth = 7
         parentNode.addChild(self.__node)
         
-        node = player.createNode("<image href='images/Scrollbar.png' x='0' y='0' "
-                "oncursorup='ScrollerMouseUp' oncursormove='ScrollerMouseMove' "
-                "oncursorout='ScrollerMouseOut' "
-                "/>")
+        node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0'/>")
         node.id = "scrollerbg"+str(numScrollBars)
-        node.x = 1 
         node.width=width-2
-        scrollBarRegistry[node.id] = self
+        node.setEventHandler(avg.CURSORUP, avg.MOUSE, self.ScrollerMouseUp);
+        node.setEventHandler(avg.CURSORUP, avg.TOUCH, self.ScrollerMouseUp);
+        node.setEventHandler(avg.CURSORMOTION, avg.MOUSE, self.ScrollerMouseMove);
+        node.setEventHandler(avg.CURSORMOTION, avg.TOUCH, self.ScrollerMouseMove);
+        node.setEventHandler(avg.CURSOROUT, avg.MOUSE, self.ScrollerMouseOut);
+        node.setEventHandler(avg.CURSOROUT, avg.TOUCH, self.ScrollerMouseOut);
+
         self.__node.addChild(node)
         
         node = player.createNode("<image href='images/ScrollbarBegin.png' x='0' y='0'/>")
@@ -70,11 +47,14 @@ class ScrollBar:
                 "<image href='images/ScrollbarScrollerBegin.png'/>")
         self.__node.addChild(self.__sliderStartNode)
         self.__sliderNode = player.createNode(
-                "<image href='images/ScrollbarScroller.png' "
-                "oncursordown='ScrollerMouseDown' oncursorup='ScrollerMouseUp' "
-                "oncursormove='ScrollerMouseMove' "
-                "/>")
+                "<image href='images/ScrollbarScroller.png'/>")
         self.__sliderNode.id = "scroller"+str(numScrollBars)
+        self.__sliderNode.setEventHandler(avg.CURSORUP, avg.MOUSE, self.ScrollerMouseUp);
+        self.__sliderNode.setEventHandler(avg.CURSORUP, avg.TOUCH, self.ScrollerMouseUp);
+        self.__sliderNode.setEventHandler(avg.CURSORDOWN, avg.MOUSE, self.ScrollerMouseDown);
+        self.__sliderNode.setEventHandler(avg.CURSORDOWN, avg.TOUCH, self.ScrollerMouseDown);
+        self.__sliderNode.setEventHandler(avg.CURSORMOTION, avg.MOUSE, self.ScrollerMouseMove);
+        self.__sliderNode.setEventHandler(avg.CURSORMOTION, avg.TOUCH, self.ScrollerMouseMove);
         self.__node.addChild(self.__sliderNode)
         
         self.__sliderEndNode = player.createNode(
@@ -89,28 +69,31 @@ class ScrollBar:
         self.CurCursor = None
         self.__positionSlider()
         numScrollBars+=1
-        scrollBarRegistry[self.__sliderNode.id] = self
-    def ScrollerMouseUp(self, event):
-        if self.CurCursor == event.cursorid:
+    def ScrollerMouseUp(self): 
+        Event = ourPlayer.getCurEvent()
+        if self.CurCursor == Event.cursorid:
             self.CurCursor = None
             self.onMoveStop()
-            event.node.releaseEventCapture(event.cursorid)
-    def ScrollerMouseMove(self, event):
-        if self.CurCursor == event.cursorid:
-            pixelsMoved = event.x-self.__startScrollCursor
+            Event.node.releaseEventCapture(Event.cursorid)
+    def ScrollerMouseMove(self):
+        Event = ourPlayer.getCurEvent()
+        if self.CurCursor == Event.cursorid:
+            pixelsMoved = Event.x-self.__startScrollCursor
             sbMoved = float(pixelsMoved)/(self.__width-1)*self.__sliderRange
             newPos = self.__startScrollPos+sbMoved
             self.moveTo(newPos)
-    def ScrollerMouseDown(self, event):
-        if (self.CurCursor is not None) and self.CurCursor != event.cursorid:
+    def ScrollerMouseDown(self):
+        Event = ourPlayer.getCurEvent()
+        if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
             return
-        self.CurCursor = event.cursorid
-        self.__startScrollCursor = event.x
+        self.CurCursor = Event.cursorid
+        self.__startScrollCursor = Event.x
         self.__startScrollPos = self.__sliderPos
-        event.node.setEventCapture(event.cursorid)
+        Event.node.setEventCapture(Event.cursorid)
         self.onMoveStart()
-    def ScrollerMouseOut(self, event):
-        if self.CurCursor == event.cursorid:
+    def ScrollerMouseOut(self):
+        Event = ourPlayer.getCurEvent()
+        if self.CurCursor == Event.cursorid:
             print ("out?!")        
 
     def setRange(self, range):

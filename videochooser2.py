@@ -88,7 +88,7 @@ def initVideoNodes():
         videoDiv.addChild(node)
         
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
-                "' loop='true' threaded='false' oncursorover='videoMouseOver' oncursorout='videoMouseOut' "
+                "' loop='true' threaded='True' oncursorover='videoMouseOver' oncursorout='videoMouseOut' "
                 "oncursorup='videoMouseUp'/>")
         node.x = 0 
         node.y = (VIDEO_THUMBNAIL_HEIGHT-(VIDEO_THUMBNAIL_WIDTH*3/4))/2
