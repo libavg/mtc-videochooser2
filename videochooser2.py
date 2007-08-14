@@ -311,11 +311,12 @@ anim.init(Player)
 Player.setFramerate(60)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
-Player.setInterval(10, onFrame)
+Player.setOnFrameHandler(onFrame)
 addControls()
-Tracker = Player.addTracker("/dev/video1394/0")
+Tracker = Player.addTracker()
 CamCal = CamCalibrator(Tracker, Player)
 CoordCal = None
 ShowFingers = False;
 activateFingers()
 Player.play()
+Player.getTestHelper().dumpObjects()

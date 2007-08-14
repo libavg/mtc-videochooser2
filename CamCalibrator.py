@@ -27,7 +27,7 @@ class CamCalibrator:
                 Param['id'] = Param['Name']
         self.__curParam = 0
         self.__saveIndex = 0
-        self.__onFrameID = gPlayer.setInterval(1, self.onFrame)
+        self.__onFrameID = gPlayer.setOnFrameHandler(self.onFrame)
     def __flipBitmap(self, ImgName):
         Node = gPlayer.getElementByID(ImgName)
         for y in range(Node.getNumVerticesY()):
