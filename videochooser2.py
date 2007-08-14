@@ -114,7 +114,7 @@ def initVideoNodes():
         
     curEntry = 0
     for videoInfo in curVideoInfos:
-        href = VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+videoInfo.videoFile
+        href = VIDEO_DIR+ourDirInfos[curDir].dirName+"/thumbs/"+videoInfo.videoFile
         createVideoNode(curEntry, href, videoInfo.title)
         curEntry += 1
 
