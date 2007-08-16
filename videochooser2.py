@@ -12,9 +12,10 @@ from videoinfo import *
 BORDER_WIDTH=4
 VIDEO_THUMBNAIL_WIDTH=225
 VIDEO_THUMBNAIL_HEIGHT=127
-#VIDEO_DIR="/home/uzadow/wos_videos/"
-#VIDEO_DIR="/home/mtc/"
-VIDEO_DIR="/Users/uzadow/wos_videos/"
+VIDEO_DIR=os.getenv('VIDEOCHOOSER_VIDEO_DIR')
+if VIDEO_DIR == None:
+    print ("Please set the environment variable VIDEOCHOOSER_VIDEO_DIR.")
+    sys.exit(1)
 VIDEO_AREA_WIDTH=1169
 
 ourSelectedVideo = -1
@@ -308,7 +309,7 @@ Log.setCategories(Log.APP |
                  )
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
-Player.setFramerate(60)
+Player.setVBlankFramerate(1)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setOnFrameHandler(onFrame)
