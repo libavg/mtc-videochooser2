@@ -156,7 +156,8 @@ def selectVideo(selectedVideo):
         Player.getElementByID("videoselected"+str(ourSelectedVideo)).opacity=0.67
         mainVideo = Player.getElementByID("mainvideo")
         smallVideo = Player.getElementByID("video"+str(ourSelectedVideo))
-        mainVideo.href=VIDEO_DIR+ourDirInfos[curDir].dirName+"/"+curVideoInfos[ourSelectedVideo].videoFile
+        mainVideo.href=(VIDEO_DIR+ourDirInfos[curDir].dirName+"/"
+                +curVideoInfos[ourSelectedVideo].videoFile)
         mainVideo.play()
         mainVideo.seekToFrame(smallVideo.getCurFrame())
 

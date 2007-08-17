@@ -5,7 +5,8 @@
     <div id="videospace" x="345" y="56">
         <image id="topborder" x="0" y="0" href="images/Info.png"/>
         <div id="mainvideocrop" x="26" y="26" width="615" height="346">
-            <video id="mainvideo" x="0" y="-58" width="615" height="461" href="" loop="1"/>
+            <video id="mainvideo" x="0" y="-58" width="615" height="461" href="" 
+                    loop="1" threaded="False"/>
         </div>
     </div>
     <image x="65" y="480" href="images/multitouch.png" opacity="0.9"/>
