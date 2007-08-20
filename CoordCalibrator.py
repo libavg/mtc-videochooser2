@@ -31,8 +31,8 @@ class CoordCalibrator:
                 MsgsNode.removeChild(0)
     def __moveMarker(self):
         Crosshair = gPlayer.getElementByID("crosshair")
-        Crosshair.x = self.__CPPCal.getDisplayPointX()-7
-        Crosshair.y = self.__CPPCal.getDisplayPointY()-7
+        Crosshair = self.__CPPCal.getDisplayPoint()
+        Crosshair = (Crosshair[0]-7, Crosshair[1]-7)
         self.__addMessage("Calibrating point "+str(self.__CurPointIndex))
     def __addMessage(self, text):
         MsgsNode = gPlayer.getElementByID("messages")
@@ -55,7 +55,7 @@ class CoordCalibrator:
         global gCoordCal
         if Event.keystring == "space":
             if self.__LastCenter:
-                self.__CPPCal.setCamPoint(self.__LastCenter.x, self.__LastCenter.y)
+                self.__CPPCal.setCamPoint(self.__LastCenter)
             self.__LastCenter = None
             Ok = self.__CPPCal.nextPoint()
             self.__CurPointIndex += 1
@@ -70,9 +70,8 @@ class CoordCalibrator:
             return False
         return True
 
-def onCoordCalTouchDown():
+def onCoordCalTouchDown(Event):
     global gCoordCal
-    Event = gPlayer.getCurEvent()
     if Event.source != avg.TRACK:
         gCoordCal.onTouchDown(Event)
 

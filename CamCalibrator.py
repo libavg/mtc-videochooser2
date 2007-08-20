@@ -30,11 +30,11 @@ class CamCalibrator:
         self.__onFrameID = gPlayer.setOnFrameHandler(self.onFrame)
     def __flipBitmap(self, ImgName):
         Node = gPlayer.getElementByID(ImgName)
-        for y in range(Node.getNumVerticesY()):
-            for x in range(Node.getNumVerticesX()):
-                pos = Node.getOrigVertexCoord(x,y)
-                pos.y = 1-pos.y
-                Node.setWarpedVertexCoord(x,y,pos)
+        Grid = Node.getOrigVertexCoords()
+        for Line in Grid:
+            for Pos in Line:
+                Pos.y = 1-Pos.y
+        Node.setWarpedVertexCoords(Grid)
     def __updateBitmap(self, ImgName, TrackerID):
         Bitmap = self.__Tracker.getImage(TrackerID)
         Node = gPlayer.getElementByID(ImgName)

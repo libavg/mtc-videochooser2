@@ -71,21 +71,18 @@ class ScrollBar:
         self.CurCursor = None
         self.__positionSlider()
         numScrollBars+=1
-    def ScrollerMouseUp(self): 
-        Event = ourPlayer.getCurEvent()
+    def ScrollerMouseUp(self, Event): 
         if self.CurCursor == Event.cursorid:
             self.CurCursor = None
             self.onMoveStop()
             Event.node.releaseEventCapture(Event.cursorid)
-    def ScrollerMouseMove(self):
-        Event = ourPlayer.getCurEvent()
+    def ScrollerMouseMove(self, Event):
         if self.CurCursor == Event.cursorid:
             pixelsMoved = Event.x-self.__startScrollCursor
             sbMoved = float(pixelsMoved)/(self.__width-1)*self.__sliderRange
             newPos = self.__startScrollPos+sbMoved
             self.moveTo(newPos)
-    def ScrollbarMouseDown(self):
-        Event = ourPlayer.getCurEvent()
+    def ScrollbarMouseDown(self, Event):
         if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
             return
         relPos = Event.node.getRelXPos(Event.x)/self.__width
@@ -100,8 +97,7 @@ class ScrollBar:
         self.__startScrollPos = self.__sliderPos
         Event.node.setEventCapture(Event.cursorid)
         self.onMoveStart()
-    def ScrollerMouseDown(self):
-        Event = ourPlayer.getCurEvent()
+    def ScrollerMouseDown(self, Event):
         if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
             return
         self.CurCursor = Event.cursorid
@@ -109,8 +105,7 @@ class ScrollBar:
         self.__startScrollPos = self.__sliderPos
         Event.node.setEventCapture(Event.cursorid)
         self.onMoveStart()
-    def ScrollerMouseOut(self):
-        Event = ourPlayer.getCurEvent()
+    def ScrollerMouseOut(self, Event):
         if self.CurCursor == Event.cursorid:
             print ("out?!")        
 

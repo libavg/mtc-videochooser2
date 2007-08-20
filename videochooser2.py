@@ -22,14 +22,12 @@ ourSelectedVideo = -1
 curDir = -1
 isSeeking = False
 
-def videoMouseOver():
-    Event = Player.getCurEvent()
+def videoMouseOver(Event):
     if Event.source != avg.TRACK:
         videoIndex = int(Event.node.id[5:])
         Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.5
 
-def videoMouseOut():
-    Event = Player.getCurEvent()
+def videoMouseOut(Event):
     if Event.source != avg.TRACK:
         videoIndex = int(Event.node.id[5:])
         if videoIndex == ourSelectedVideo:
@@ -37,8 +35,7 @@ def videoMouseOut():
         else:
             Player.getElementByID("videoselected"+str(videoIndex)).opacity=0.0
 
-def videoMouseUp():
-    Event = Player.getCurEvent()
+def videoMouseUp(Event):
     if Event.source != avg.TRACK:
         if Event.node.id[:5] == "video":
             videoIndex = int(Event.node.id[5:])
@@ -90,8 +87,8 @@ def initVideoNodes():
         videoDiv.addChild(node)
         
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
-                "' loop='true' threaded='True' oncursorover='videoMouseOver' oncursorout='videoMouseOut' "
-                "oncursorup='videoMouseUp'/>")
+                "' loop='true' threaded='True' oncursorover='videoMouseOver'"+
+                " oncursorout='videoMouseOut' oncursorup='videoMouseUp' fps='30'/>")
         node.x = 0 
         node.y = (VIDEO_THUMBNAIL_HEIGHT-(VIDEO_THUMBNAIL_WIDTH*3/4))/2
         node.height = VIDEO_THUMBNAIL_WIDTH*3/4
@@ -210,13 +207,12 @@ def activateFingers():
         Player.getElementByID("fingers").active = 0
     Tracker.setDebugImages(False, ShowFingers)
     
-def onKeyUp():
+def onKeyUp(Event):
     global CamCal
     global CoordCal
     global Player
     global ShowFingers
     global Tracker
-    Event = Player.getCurEvent()
     if Event.keystring == "t":
         CamCal.switchActive(ShowFingers)
         if CamCal.isActive():
@@ -250,7 +246,7 @@ def onKeyUp():
 
 Cursors = {}
 
-def onTouchDown():
+def onTouchDown(Event):
     pass
 #    global CamCal
 #    global Player
@@ -262,7 +258,7 @@ def onTouchDown():
 #        node.y = Event.y-8
 #        Player.getElementByID('camcalibrator').addChild(node)
         
-def onTouchUp():
+def onTouchUp(Event):
     pass
 #    global CamCal
 #    global Player
@@ -276,7 +272,7 @@ def onTouchUp():
 #        calnode.removeChild(
 #                calnode.indexOf(node))
 
-def onTouchMotion():
+def onTouchMotion(Event):
     pass
 #    global CamCal
 #    global Player
@@ -310,7 +306,7 @@ Log.setCategories(Log.APP |
                  )
 Player.loadFile("videochooser2.avg")
 anim.init(Player)
-Player.setVBlankFramerate(1)
+Player.setVBlankFramerate(2)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setOnFrameHandler(onFrame)
