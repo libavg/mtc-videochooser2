@@ -76,7 +76,7 @@ def initVideoNodes():
     def createVideoNode(index, href, title):
         videoDiv = Player.createNode("<div id='videodiv"+str(index)+"'/>")
         videoDiv.x = (VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2)*index
-        Player.getElementByID("videos").addChild(videoDiv)
+        Player.getElementByID("videos").appendChild(videoDiv)
         
         node = Player.createNode("<image id='videoselected"+str(index)+
                 "' href='images/VideoSelected.png'/>")
@@ -84,7 +84,7 @@ def initVideoNodes():
         node.width = VIDEO_THUMBNAIL_WIDTH+BORDER_WIDTH*2
         node.height = VIDEO_THUMBNAIL_HEIGHT+BORDER_WIDTH*2
         node.opacity = 0
-        videoDiv.addChild(node)
+        videoDiv.appendChild(node)
         
         node = Player.createNode("<video id='video"+str(index)+"' href='"+href+
                 "' loop='true' threaded='True' oncursorover='videoMouseOver'"+
@@ -98,8 +98,8 @@ def initVideoNodes():
         cropDiv.y = 19+BORDER_WIDTH
         cropDiv.height = VIDEO_THUMBNAIL_HEIGHT
         cropDiv.width = VIDEO_THUMBNAIL_WIDTH
-        cropDiv.addChild(node)
-        videoDiv.addChild(cropDiv)
+        cropDiv.appendChild(node)
+        videoDiv.appendChild(cropDiv)
 
         node = Player.createNode("<words/>")
         node.x = BORDER_WIDTH+2
@@ -108,7 +108,7 @@ def initVideoNodes():
         node.font = "EurostileCondensed" 
         node.color = "F39C01"
         node.text = title
-        videoDiv.addChild(node)
+        videoDiv.appendChild(node)
         
     curEntry = 0
     for videoInfo in curVideoInfos:
@@ -256,7 +256,7 @@ def onTouchDown(Event):
 #        node = Cursors[Event.cursorid] = Player.createNode("<div><words text='%s'/><image href='../images/Cursor.png' id='%s'/></div>"%(c_id,c_id))
 #        node.x = Event.x-8
 #        node.y = Event.y-8
-#        Player.getElementByID('camcalibrator').addChild(node)
+#        Player.getElementByID('camcalibrator').appendChild(node)
         
 def onTouchUp(Event):
     pass

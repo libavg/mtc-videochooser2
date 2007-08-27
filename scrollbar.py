@@ -22,7 +22,7 @@ class ScrollBar:
         self.__sliderRange = sliderRange
         self.__endWidth = 5
         self.__scrollerEndWidth = 7
-        parentNode.addChild(self.__node)
+        parentNode.appendChild(self.__node)
         
         node = player.createNode("<image href='images/Scrollbar.png' x='1' y='0'/>")
         node.id = "scrollerbg"+str(numScrollBars)
@@ -36,18 +36,18 @@ class ScrollBar:
         node.setEventHandler(avg.CURSOROUT, avg.MOUSE, self.ScrollerMouseOut);
         node.setEventHandler(avg.CURSOROUT, avg.TOUCH, self.ScrollerMouseOut);
 
-        self.__node.addChild(node)
+        self.__node.appendChild(node)
         
         node = player.createNode("<image href='images/ScrollbarBegin.png' x='0' y='0'/>")
-        self.__node.addChild(node)
+        self.__node.appendChild(node)
         
         node = player.createNode("<image href='images/ScrollbarEnd.png' y='0'/>")
         node.x = width-self.__endWidth
-        self.__node.addChild(node)
+        self.__node.appendChild(node)
         
         self.__sliderStartNode = player.createNode(
                 "<image href='images/ScrollbarScrollerBegin.png'/>")
-        self.__node.addChild(self.__sliderStartNode)
+        self.__node.appendChild(self.__sliderStartNode)
         self.__sliderNode = player.createNode(
                 "<image href='images/ScrollbarScroller.png'/>")
         self.__sliderNode.id = "scroller"+str(numScrollBars)
@@ -57,11 +57,11 @@ class ScrollBar:
         self.__sliderNode.setEventHandler(avg.CURSORDOWN, avg.TOUCH, self.ScrollerMouseDown);
         self.__sliderNode.setEventHandler(avg.CURSORMOTION, avg.MOUSE, self.ScrollerMouseMove);
         self.__sliderNode.setEventHandler(avg.CURSORMOTION, avg.TOUCH, self.ScrollerMouseMove);
-        self.__node.addChild(self.__sliderNode)
+        self.__node.appendChild(self.__sliderNode)
         
         self.__sliderEndNode = player.createNode(
                 "<image href='images/ScrollbarScrollerEnd.png'/>")
-        self.__node.addChild(self.__sliderEndNode)
+        self.__node.appendChild(self.__sliderEndNode)
         
         self.__startCallback = None
         self.__moveCallback = None
@@ -85,7 +85,8 @@ class ScrollBar:
     def ScrollbarMouseDown(self, Event):
         if (self.CurCursor is not None) and self.CurCursor != Event.cursorid:
             return
-        relPos = Event.node.getRelXPos(Event.x)/self.__width
+        absPos = (Event.x, Event.y)
+        relPos = Event.node.getRelPos(absPos)[0]/self.__width
         self.__sliderPos = relPos*self.__sliderRange -self.__sliderWidth/2
         if self.__sliderPos < 0:
             self.__sliderPos = 0

@@ -47,7 +47,7 @@ class CoordCalibrator:
         Node.x = 0
         Node.y = self.__NumMessages*13
         Node.text = text
-        MsgsNode.addChild(Node)
+        MsgsNode.appendChild(Node)
     def onTouchDown(self, Event):
         self.__LastCenter = Event.center
         self.__addMessage("  Touch at %(x).2f, %(y).2f" % { "x": Event.center.x, "y": Event.center.y})
