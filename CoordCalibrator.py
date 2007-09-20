@@ -18,6 +18,7 @@ class CoordCalibrator:
         self.__CPPCal = self.__Tracker.startCalibration()
         self.__LastCenter = None
         self.__NumMessages = 0
+        self._mycursor = None
         gPlayer.getElementByID("coordcalibrator").active = True
         gPlayer.getElementByID("coordcalibrator").opacity = 1
         self.__addMessage("Starting calibration.")
@@ -31,8 +32,8 @@ class CoordCalibrator:
                 MsgsNode.removeChild(0)
     def __moveMarker(self):
         Crosshair = gPlayer.getElementByID("crosshair")
-        Crosshair = self.__CPPCal.getDisplayPoint()
-        Crosshair = (Crosshair[0]-7, Crosshair[1]-7)
+        Crosshair.x, Crosshair.y = self.__CPPCal.getDisplayPoint()
+        Crosshair.x, Crosshair.y = (Crosshair.x-7, Crosshair.y-7)
         self.__addMessage("Calibrating point "+str(self.__CurPointIndex))
     def __addMessage(self, text):
         MsgsNode = gPlayer.getElementByID("messages")
@@ -49,8 +50,22 @@ class CoordCalibrator:
         Node.text = text
         MsgsNode.appendChild(Node)
     def onTouchDown(self, Event):
+        if not self._mycursor:
+            self._mycursor = Event.cursorid
+        else:
+            return
         self.__LastCenter = Event.center
-        self.__addMessage("  Touch at %(x).2f, %(y).2f" % { "x": Event.center.x, "y": Event.center.y})
+        self.__addMessage("  Touch at %(x).2f, %(y).2f" % { "x": Event.center[0], "y": Event.center[1]})
+    def onTouchMove(self,Event):
+        if self._mycursor == Event.cursorid:
+            self.__LastCenter = Event.center
+
+    def onTouchUp(self, Event):
+        if self._mycursor:
+            self._mycursor = None
+        else:
+            return
+
     def onKeyUp(self, Event):
         global gCoordCal
         if Event.keystring == "space":
