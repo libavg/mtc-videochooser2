@@ -50,6 +50,8 @@ class CoordCalibrator:
         Node.text = text
         MsgsNode.appendChild(Node)
     def onTouchDown(self, Event):
+        if Event.source != avg.TOUCH:
+            return
         if not self._mycursor:
             self._mycursor = Event.cursorid
         else:
@@ -57,10 +59,15 @@ class CoordCalibrator:
         self.__LastCenter = Event.center
         self.__addMessage("  Touch at %(x).2f, %(y).2f" % { "x": Event.center[0], "y": Event.center[1]})
     def onTouchMove(self,Event):
+        if Event.source != avg.TOUCH:
+            return
         if self._mycursor == Event.cursorid:
             self.__LastCenter = Event.center
 
     def onTouchUp(self, Event):
+        if Event.source != avg.TOUCH:
+            return
+        self.__addMessage("touchup")
         if self._mycursor:
             self._mycursor = None
         else:
@@ -70,7 +77,9 @@ class CoordCalibrator:
         global gCoordCal
         if Event.keystring == "space":
             if self.__LastCenter:
+                self.__addMessage("  Using %(x).2f, %(y).2f" % { "x": self.__LastCenter[0], "y": self.__LastCenter[1]})
                 self.__CPPCal.setCamPoint(self.__LastCenter)
+                self._mycursor = None
             self.__LastCenter = None
             Ok = self.__CPPCal.nextPoint()
             self.__CurPointIndex += 1
@@ -84,6 +93,16 @@ class CoordCalibrator:
             gCoordCal = None
             return False
         return True
+
+def onCoordCalTouchUp(Event):
+    global gCoordCal
+    if Event.source != avg.TRACK:
+        gCoordCal.onTouchUp(Event)
+
+def onCoordCalTouchMove(Event):
+    global gCoordCal
+    if Event.source != avg.TRACK:
+        gCoordCal.onTouchMove(Event)
 
 def onCoordCalTouchDown(Event):
     global gCoordCal
