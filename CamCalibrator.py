@@ -16,15 +16,12 @@ class CamCalibrator:
         self.__Tracker = Tracker
         self.__showSmallBmps = True
         self.__ParamList = [
-            {'Name':"threshold", 'min':1, 'max':255, 'increment':1, 'precision':0},
-            {'Name':"brightness", 'min':1, 'max':255, 'increment':1, 'precision':0},
-            {'Name':"gamma", 'min':0, 'max':1, 'increment':1, 'precision':0},
-            {'Name':"shutter", 'min':1, 'max':533, 'increment':1, 'precision':0},
-            {'Name':"gain", 'min':16, 'max':64, 'increment':1, 'precision':0},
+            {'Name':"Track Threshold", 'path':"/trackerconfig/tracker/track/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Touch Threshold", 'path':"/trackerconfig/tracker/touch/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Brightness", 'path':"/trackerconfig/camera/brightness/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Shutter", 'path':"/trackerconfig/camera/shutter/@value", 'min':1, 'max':533, 'increment':1, 'precision':0},
+            {'Name':"Gain", 'path':"/trackerconfig/camera/gain/@value", 'min':16, 'max':64, 'increment':1, 'precision':0},
         ]
-        for Param in self.__ParamList:
-            if not('id' in Param):
-                Param['id'] = Param['Name']
         self.__curParam = 0
         self.__saveIndex = 0
         self.__onFrameID = gPlayer.setOnFrameHandler(self.onFrame)
@@ -44,16 +41,16 @@ class CamCalibrator:
             Node.width = 1280
             Node.height = 720
         self.__flipBitmap(ImgName)
-    def __getParam(self, Name):
-        return getattr(self.__Tracker, Name)
-    def __setParam(self, Name, Val):
-        setattr(self.__Tracker, Name, Val)
+    def __getParam(self, Path):
+        return int(self.__Tracker.getParam(Path))
+    def __setParam(self, Path, Val):
+        self.__Tracker.setParam(Path, str(Val))
     def __displayParams(self):
         i = 0
         for Param in self.__ParamList:
             Node = gPlayer.getElementByID("param"+str(i))
-            Name = Param['id']
-            Val = self.__getParam(Name)
+            Name = Param['path']
+            Val = float(self.__getParam(Name))
             Node.text = Param['Name']+": "+('%(val).'+str(Param['precision'])+'f') % {'val': Val}
             if self.__curParam == i:
                 Node.color = "FFFFFF"
@@ -62,13 +59,13 @@ class CamCalibrator:
             i += 1
     def __changeParam(self, Change):
         curParam = self.__ParamList[self.__curParam]
-        Val = self.__getParam(curParam['id'])
+        Val = self.__getParam(curParam['path'])
         Val += Change*curParam['increment']
         if Val < curParam['min']:
             Val = curParam['min']
         if Val > curParam['max']:
             Val = curParam['max']
-        self.__setParam(curParam['id'], Val)
+        self.__setParam(curParam['path'], Val)
     def __showImages(self):
         self.__showSmallBmps = not(self.__showSmallBmps) 
         self.__Tracker.setDebugImages(self.__showSmallBmps, True)
