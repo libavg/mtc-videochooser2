@@ -229,7 +229,7 @@ def onKeyUp(Event):
         else:
             activateFingers()
     elif Event.keystring == "s":
-        Tracker.saveConfig()
+        Tracker.saveConfig("")
         print ("Tracker configuration saved.")
     elif Event.keystring == "c":
         if not(CamCal.isActive()) and not(CoordCal):
@@ -312,7 +312,7 @@ sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25,
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
 Player.setOnFrameHandler(onFrame)
 addControls()
-Tracker = Player.addTracker()
+Tracker = Player.addTracker("trackerrc")
 CamCal = CamCalibrator(Tracker, Player)
 CoordCal = None
 ShowFingers = False;

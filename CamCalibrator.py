@@ -16,11 +16,11 @@ class CamCalibrator:
         self.__Tracker = Tracker
         self.__showSmallBmps = True
         self.__ParamList = [
-            {'Name':"Track Threshold", 'path':"/trackerconfig/tracker/track/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
-            {'Name':"Touch Threshold", 'path':"/trackerconfig/tracker/touch/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
-            {'Name':"Brightness", 'path':"/trackerconfig/camera/brightness/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
-            {'Name':"Shutter", 'path':"/trackerconfig/camera/shutter/@value", 'min':1, 'max':533, 'increment':1, 'precision':0},
-            {'Name':"Gain", 'path':"/trackerconfig/camera/gain/@value", 'min':16, 'max':64, 'increment':1, 'precision':0},
+            {'Name':"Track Threshold", 'path':"/tracker/track/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Touch Threshold", 'path':"/tracker/touch/threshold/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Brightness", 'path':"/camera/brightness/@value", 'min':1, 'max':255, 'increment':1, 'precision':0},
+            {'Name':"Shutter", 'path':"/camera/shutter/@value", 'min':1, 'max':533, 'increment':1, 'precision':0},
+            {'Name':"Gain", 'path':"/camera/gain/@value", 'min':16, 'max':64, 'increment':1, 'precision':0},
         ]
         self.__curParam = 0
         self.__saveIndex = 0
