@@ -238,6 +238,8 @@ def onKeyUp(Event):
         ShowFingers = not(ShowFingers)
         if not(CamCal.isActive()):
             activateFingers()
+    elif Event.keystring == "d":
+        Player.getTestHelper().dumpObjects()
     elif CamCal.isActive():
         CamCal.onKeyUp(Event)
     elif CoordCal:
