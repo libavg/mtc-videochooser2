@@ -4,7 +4,6 @@
 
 import sys, os, math, stat
 from libavg import avg
-from libavg import anim
 
 global gPlayer
 

@@ -3,7 +3,6 @@
 
 import sys, os, math, stat
 from libavg import avg
-from libavg import anim
 from CamCalibrator import *
 from CoordCalibrator import *
 sys.path += ['../..']
@@ -308,7 +307,6 @@ Log.setCategories(Log.APP |
 #                 Log.EVENTS2
                  )
 Player.loadFile("videochooser2.avg")
-anim.init(Player)
 Player.setFramerate(60)
 sb = ScrollBar(Player, Player.getElementByID("videoarea"), 25, 
         35+VIDEO_THUMBNAIL_HEIGHT, VIDEO_AREA_WIDTH-16, 1000)
