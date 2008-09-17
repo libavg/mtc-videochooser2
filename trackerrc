@@ -2,41 +2,43 @@
 <trackerconfig>
  <camera>
   <source value="fw"/>
-  <device value="0"/>
+  <device value=""/>
   <format value="MONO8"/>
   <size x="640" y="480"/>
-  <fps value="30"/>
-  <brightness value="175"/>
-  <exposure value="511"/>
+  <fps value="60"/>
+  <brightness value="1"/>
+  <exposure value="7"/>
   <gamma value="0"/>
-  <gain value="44"/>
-  <shutter value="142"/>
+  <gain value="27"/>
+  <shutter value="529"/>
  </camera>
  <tracker>
   <prescale value="1"/>
   <historyupdateinterval value="25"/>
-  <brighterregions value="false"/>
+  <brighterregions value="true"/>
   <eventonmove value="true"/>
   <contourprecision value="0"/>
   <mask value=""/>
   <track>
-   <threshold value="20"/>
-   <similarity value="10"/>
-   <areabounds min="290" max="1000000"/>
+   <threshold value="25"/>
+   <similarity value="100"/>
+   <areabounds min="700" max="1000000"/>
    <eccentricitybounds min="1" max="80"/>
   </track>
   <touch>
-   <threshold value="130"/>
-   <similarity value="10"/>
-   <areabounds min="10" max="60"/>
-   <eccentricitybounds min="1" max="8"/>
+   <threshold value="177"/>
+   <similarity value="100"/>
+   <areabounds min="10" max="200000"/>
+   <eccentricitybounds min="1" max="800"/>
+   <bandpass min="1.4" max="2.1"/>
+   <bandpasspostmult value="32"/>
   </touch>
  </tracker>
  <transform>
-  <distortionparams p2="0" p3="0"/>
-  <trapezoid value="0.000"/>
-  <angle value="0"/>
-  <displaydisplacement x="0" y="0"/>
-  <displayscale x="2" y="1.5"/>
+  <distortionparams p2="3.98942" p3="-6.05355" p4="2.96178"/>
+  <trapezoid value="-0.0716199"/>
+  <angle value="0.048796"/>
+  <displaydisplacement x="1662.62" y="1156.96"/>
+  <displayscale x="-3.38537" y="-3.4048"/>
  </transform>
 </trackerconfig>

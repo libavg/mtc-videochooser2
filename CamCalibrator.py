@@ -29,17 +29,17 @@ class CamCalibrator:
         Grid = Node.getOrigVertexCoords()
         Grid = [ [ (pos[0], 1-pos[1]) for pos in line ] for line in Grid]
         Node.setWarpedVertexCoords(Grid)
-    def __updateBitmap(self, ImgName, TrackerID):
+    def __updateBitmap(self, ImgName, TrackerID, fullSize = False):
         Bitmap = self.__Tracker.getImage(TrackerID)
         Node = gPlayer.getElementByID(ImgName)
         Node.setBitmap(Bitmap)
-        if ImgName != "fingers":
-            Node.width=Bitmap.getSize()[0]/4
-            Node.height=Bitmap.getSize()[1]/4
-        else:
+        if fullSize:
             Node.width = 1280
             Node.height = 720
-        self.__flipBitmap(ImgName)
+        else:
+            Node.width=Bitmap.getSize()[0]/4
+            Node.height=Bitmap.getSize()[1]/4
+#        self.__flipBitmap(ImgName)
     def __getParam(self, Path):
         return int(self.__Tracker.getParam(Path))
     def __setParam(self, Path, Val):
@@ -75,7 +75,8 @@ class CamCalibrator:
             self.__updateBitmap("distorted", avg.IMG_DISTORTED)
             self.__updateBitmap("nohistory", avg.IMG_NOHISTORY)
             self.__updateBitmap("histogram", avg.IMG_HISTOGRAM)
-        self.__updateBitmap("fingers", avg.IMG_FINGERS)
+            self.__updateBitmap("bkgnd", avg.IMG_DISTORTED, True)
+        self.__updateBitmap("fingers", avg.IMG_FINGERS, True)
     def switchActive(self, ShowFingers):
         global gPlayer
         if self.__isActive:
@@ -88,7 +89,8 @@ class CamCalibrator:
             gPlayer.getElementByID("camcalibrator").active = 1 
             gPlayer.getElementByID("camcalibrator").opacity = 1 
             self.__displayParams()
-        self.__Tracker.setDebugImages(self.__showSmallBmps, self.__isActive or ShowFingers)
+        self.__Tracker.setDebugImages(self.__showSmallBmps, 
+                self.__isActive or ShowFingers)
     def onKeyUp(self, Event):
         if Event.keystring == "up":
             if self.__curParam > 0:

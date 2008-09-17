@@ -19,21 +19,22 @@
     </div>
     <div id="camcalibrator" opacity="0" active="false" oncursordown="onTouchDown" oncursorup="onTouchUp" oncursormove="onTouchMotion">
       <image id="border" x="0" y="0" width="1280" height="720" href="../images/border.png"/>
+      <image id="bkgnd" x="1" y="1" width="1278" height="710" angle="3.14159" sensitive="false"/>
       <div id="tracking" x="300" y="32">
         <words x="0" y="13" text="camera" size="16" font="Eurostile"/>
         <image x="0" y="32" href="../images/CamImgBorder.png"/>
-        <image id="camera" x="2" y="34" width="160" height="120"/>
+        <image id="camera" x="2" y="34" width="160" height="120" angle="3.14159"/>
         
         <words x="166" y="13" text="distorted" size="16" font="Eurostile"/>
         <image x="166" y="32" href="../images/CamImgBorder.png"/>
-        <image id="distorted" x="168" y="34" width="160" height="120"/>
+        <image id="distorted" x="168" y="34" width="160" height="120" angle="3.14159"/>
 
         <words x="332" y="13" text="history" size="16" font="Eurostile"/>
         <image x="332" y="32" href="../images/CamImgBorder.png"/>
-        <image id="nohistory" x="334" y="34" width="160" height="120"/>
+        <image id="nohistory" x="334" y="34" width="160" height="120" angle="3.14159"/>
         
         <image x="498" y="32" href="../images/CamImgBorder.png"/>
-        <image id="histogram" x="500" y="34" width="160" height="120"/>
+        <image id="histogram" x="500" y="34" width="160" height="120" angle="3.14159"/>
 
         <words id="param0" x="0" y="162" size="13" font="Eurostile"/> 
         <words id="param1" x="0" y="178" size="13" font="Eurostile"/> 
@@ -48,5 +49,6 @@
       <div id="messages" x="100" y="100"/>
       <image id="crosshair" href="../images/Crosshair.png"/>
     </div>
-    <image id="fingers" x="1" y="1" width="1278" height="710" active="false" sensitive="false"/>
+    <image id="fingers" x="1" y="1" width="1278" height="710" active="false" 
+            sensitive="false" angle="3.14159"/>
 </avg>
