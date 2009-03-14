@@ -287,7 +287,7 @@ def onTouchMotion(Event):
 #        node.x = Event.x-8
 #        node.y = Event.y-8
 
-Player = avg.Player()
+Player = avg.Player.get()
 Log = avg.Logger.get()
 bDebug = not(os.getenv('AVG_DEPLOY'))
 if (bDebug):
