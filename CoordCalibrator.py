@@ -27,13 +27,14 @@ class CoordCalibrator:
         self.__savedGain = self.__Tracker.getParam("/camera/gain/@value")
         self.__Tracker.setParam("/camera/gain/@value", "16")
     def __del__(self):
-        global gPlayer
         if gPlayer != None:
             gPlayer.getElementByID("coordcalibrator").active = False
             gPlayer.getElementByID("coordcalibrator").opacity = 0
             MsgsNode = gPlayer.getElementByID("messages")
             for i in range(0, MsgsNode.getNumChildren()):
                 MsgsNode.removeChild(0)
+            self.__Tracker.setParam("/camera/shutter/@value", self.__savedShutter)
+            self.__Tracker.setParam("/camera/gain/@value", self.__savedGain)
     def __moveMarker(self):
         Crosshair = gPlayer.getElementByID("crosshair")
         Crosshair.x, Crosshair.y = self.__CPPCal.getDisplayPoint()
@@ -90,14 +91,10 @@ class CoordCalibrator:
             self.__moveMarker()
             if not(Ok):
                 self.__Tracker.endCalibration()
-                self.__Tracker.setParam("/camera/shutter/@value", self.__savedShutter)
-                self.__Tracker.setParam("/camera/gain/@value", self.__savedGain)
                 gCoordCal = None
             return Ok
         elif Event.keystring == "a":
             self.__Tracker.abortCalibration()
-            self.__Tracker.setParam("/camera/shutter/@value", self.__savedShutter)
-            self.__Tracker.setParam("/camera/gain/@value", self.__savedGain)
             gCoordCal = None
             return False
         return True
